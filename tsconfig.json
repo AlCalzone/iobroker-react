@@ -1,0 +1,26 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "compilerOptions": {
+    // do not compile anything, this file is just to configure type checking
+    // the compilation is configured in tsconfig.build.json
+    "noEmit": true,
+    // Never emit faulty JS
+    "noEmitOnError": true,
+    "outDir": "./build/",
+    "removeComments": false,
+    "jsx": "react",
+    // Avoid runtime imports that are unnecessary
+    "importsNotUsedAsValues": "error",
+    // Required for TS debugging
+    "sourceMap": true,
+    "inlineSourceMap": false
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "exclude": [
+    "build/**",
+    "node_modules/**"
+  ]
+}
