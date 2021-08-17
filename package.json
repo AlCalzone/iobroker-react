@@ -1,0 +1,61 @@
+{
+  "name": "iobroker-react",
+  "version": "0.0.1",
+  "description": "An alternative approach to https://github.com/ioBroker/adapter-react/",
+  "author": {
+    "name": "AlCalzone",
+    "email": "d.griesel@gmx.net"
+  },
+  "homepage": "https://github.com/AlCalzone/iobroker-react#readme",
+  "license": "MIT",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlCalzone/iobroker-react.git"
+  },
+  "main": "build/index.js",
+  "exports": {
+    ".": "./build/index.js",
+    "./package.json": "./package.json",
+    "./*": "./build/*.js"
+  },
+  "types": "build/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "build/index.d.ts": [
+        "build/index.d.ts"
+      ],
+      "*": [
+        "build/*"
+      ]
+    }
+  },
+  "files": [
+    "build/**/*.{js,d.ts,map}"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepare": "build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@iobroker/socket-client": "file:../socket-client",
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/iobroker": "^3.3.4",
+    "@types/react": "^17.0.18",
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/parser": "^4.29.2",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.2",
+    "react": "^17.0.2",
+    "typescript": "^4.3.5"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2"
+  },
+  "bugs": {
+    "url": "https://github.com/AlCalzone/iobroker-react/issues"
+  }
+}
