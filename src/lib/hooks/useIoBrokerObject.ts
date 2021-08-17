@@ -7,8 +7,21 @@ export interface UseIoBrokerObjectOptions {
 }
 
 /**
- * Links a React state to an object in ioBroker
+ * Hook to read or subscribe to an object within ioBroker.
  * @param objectId The object id to access
+ *
+ * The component must be wrapped in an `IoBrokerApp` or one of its variants. Example:
+ * ```tsx
+ * import { useIoBrokerObject } from "iobroker-react/hooks";
+ *
+ * const MyComponent: React.FC<MyAppProps> = (props) => {
+ *   const myObject = useIoBrokerObject("my-adapter.0.device1");
+ *
+ *   return (
+ *     <div>{myObject?.common.name ?? "UNKNOWN"}</div>
+ *   );
+ * };
+ * ```
  */
 export function useIoBrokerObject<T extends string>(
 	objectId: T,

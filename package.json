@@ -17,6 +17,7 @@
   "exports": {
     ".": "./build/index.js",
     "./package.json": "./package.json",
+    "./*.map": "./build/*.js.map",
     "./*": "./build/*.js"
   },
   "types": "build/index.d.ts",
@@ -35,16 +36,20 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
-    "prepare": "build",
+    "watch": "npm run build -- --watch",
+    "prepare": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies": {
+    "@iobroker/socket-client": "file:../socket-client"
+  },
   "devDependencies": {
-    "@iobroker/socket-client": "file:../socket-client",
     "@tsconfig/recommended": "^1.0.1",
     "@types/iobroker": "^3.3.4",
     "@types/react": "^17.0.18",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.2",
+    "alcalzone-shared": "^4.0.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
