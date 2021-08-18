@@ -6,4 +6,6 @@ module.exports = {
 	useTabs: true,
 	tabWidth: 4,
 	endOfLine: "lf",
+
+	plugins: [require("prettier-plugin-organize-imports")],
 };

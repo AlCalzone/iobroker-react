@@ -56,7 +56,7 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 				console.error(err);
 			},
 		});
-	}, []);
+	}, [props.name]);
 
 	return connection ? (
 		<ConnectionContext.Provider value={connection}>

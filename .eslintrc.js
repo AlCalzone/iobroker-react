@@ -7,9 +7,10 @@ module.exports = {
 	},
 	extends: [
 		"plugin:@typescript-eslint/recommended", // Uses the recommended rules from the @typescript-eslint/eslint-plugin
+		"plugin:react-hooks/recommended",
 		"plugin:prettier/recommended", // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
 	],
-	plugins: [],
+	plugins: ["react-hooks"],
 	rules: {
 		// Place to specify ESLint rules. Can be used to overwrite rules specified from the extended configs
 		"@typescript-eslint/no-parameter-properties": "off",

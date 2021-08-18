@@ -46,7 +46,7 @@ const SettingsAppContent: React.FC<Omit<SettingsAppProps, "name">> = (
 			}
 			setSettings(settings);
 		}
-	}, [instanceObj]);
+	}, [instanceObj, props, secret]);
 	// TODO: Timeout when loading settings fails
 
 	return settings ? (

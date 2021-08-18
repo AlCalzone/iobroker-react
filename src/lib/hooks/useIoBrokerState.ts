@@ -1,6 +1,6 @@
+import { isObject } from "alcalzone-shared/typeguards";
 import React from "react";
 import { useConnection } from "./useConnection";
-import { isObject } from "alcalzone-shared/typeguards";
 export interface UseIoBrokerStateOptions<
 	T extends ioBroker.State["val"] = ioBroker.State["val"],
 > {
@@ -84,17 +84,20 @@ export function useIoBrokerState<
 
 	const connection = useConnection();
 
-	const onStateChange: ioBroker.StateChangeHandler = (changedId, state) => {
-		if (state && state.ack && changedId === id) {
-			const value = state.val as T;
-			setValue({
-				value: transform ? transform(value) : value,
-				ack: state.ack,
-			});
-		}
-	};
-
 	React.useEffect(() => {
+		const onStateChange: ioBroker.StateChangeHandler = (
+			changedId,
+			state,
+		) => {
+			if (state && state.ack && changedId === id) {
+				const value = state.val as T;
+				setValue({
+					value: transform ? transform(value) : value,
+					ack: state.ack,
+				});
+			}
+		};
+
 		(async () => {
 			// Load value initially
 			if (subscribe) {
@@ -116,7 +119,7 @@ export function useIoBrokerState<
 		return () => {
 			if (subscribe) connection.unsubscribeState(id, onStateChange);
 		};
-	}, []);
+	}, [connection, defaultAck, defaultValue, id, subscribe, transform]);
 
 	const updateValue: BoundSetState = (state) => {
 		// While updating a value on the server, update it locally with ACK = false

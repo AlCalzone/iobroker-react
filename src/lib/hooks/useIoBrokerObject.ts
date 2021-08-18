@@ -32,11 +32,11 @@ export function useIoBrokerObject<T extends string>(
 	const [object, setObject] = React.useState<ioBroker.Object>();
 	const connection = useConnection();
 
-	const onObjectChange: ioBroker.ObjectChangeHandler = (id, obj) => {
-		setObject(obj ?? undefined);
-	};
-
 	React.useEffect(() => {
+		const onObjectChange: ioBroker.ObjectChangeHandler = (id, obj) => {
+			setObject(obj ?? undefined);
+		};
+
 		(async () => {
 			if (subscribe) {
 				await connection.subscribeObject(objectId, onObjectChange);
@@ -52,7 +52,7 @@ export function useIoBrokerObject<T extends string>(
 				connection.unsubscribeObject(objectId, onObjectChange);
 			}
 		};
-	}, []);
+	}, [connection, objectId, subscribe]);
 
 	return object as ioBroker.ObjectIdToObjectType<T> | undefined;
 }
