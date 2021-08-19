@@ -52,16 +52,14 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 	const { name, theme = "light", translations = {} } = props;
 
 	// Manage translations
-	const i18nRef = React.useRef(
-		new I18n(extend({}, defaultTranslations, translations)),
-	);
+	const [i18nInstance, setI18nInstance] = React.useState<I18n>({} as any);
 	const {
 		language,
 		setLanguage,
 		extendTranslations,
 		setTranslations,
 		translate,
-	} = i18nRef.current;
+	} = i18nInstance;
 
 	// Manage connection
 	const [connection, setConnection] = React.useState<Connection>();
@@ -69,15 +67,21 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 		const _connection = new Connection({
 			name,
 			onReady: () => {
+				// Setup translations first
+				const i18n = new I18n(
+					extend({}, defaultTranslations, translations),
+				);
+				i18n.setLanguage(_connection.systemLang);
+				setI18nInstance(i18n);
+
+				// because this will cause all child components to be rendered
 				setConnection(_connection);
-				setLanguage(_connection.systemLang);
-				console.log(_connection.systemLang);
 			},
 			onError: (err) => {
 				console.error(err);
 			},
 		});
-	}, [name, setLanguage]);
+	}, [name, translations]);
 
 	// Manage themes
 	const [themeName, setThemeName] = React.useState<ThemeName>(theme);
