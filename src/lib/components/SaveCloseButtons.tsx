@@ -4,6 +4,7 @@ import CloseIcon from "@material-ui/icons/Close";
 // import I18n from "../i18n";
 import SaveIcon from "@material-ui/icons/Save";
 import React from "react";
+import { useI18n } from "../i18n";
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -33,6 +34,7 @@ export interface SaveCloseButtonsProps {
 const SaveCloseButtons: React.FC<SaveCloseButtonsProps> = (props) => {
 	const { onSave, onClose, changed, hasErrors } = props;
 	const classes = useStyles();
+	const { translate } = useI18n();
 
 	return (
 		<div className={classes.root}>
@@ -46,7 +48,7 @@ const SaveCloseButtons: React.FC<SaveCloseButtonsProps> = (props) => {
 				onClick={() => onSave(false)}
 				disabled={!changed || !!hasErrors}
 			>
-				Save
+				{translate("ra_Save")}
 				{/* {!noTextOnButtons && I18n.t("ra_Save")} */}
 			</Button>
 
@@ -60,7 +62,7 @@ const SaveCloseButtons: React.FC<SaveCloseButtonsProps> = (props) => {
 				onClick={() => onSave(true)}
 				disabled={!changed || !!hasErrors}
 			>
-				Save and Close
+				{translate("ra_Save and close")}
 				{/* {!noTextOnButtons && I18n.t("ra_Save")} */}
 			</Button>
 
@@ -74,7 +76,7 @@ const SaveCloseButtons: React.FC<SaveCloseButtonsProps> = (props) => {
 				onClick={onClose}
 				style={{ marginLeft: "auto" }}
 			>
-				Close
+				{translate("ra_Close")}
 				{/* {!noTextOnButtons && I18n.t("ra_Save")} */}
 			</Button>
 		</div>

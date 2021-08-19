@@ -2,11 +2,12 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import React from "react";
 import Loader from "../components/Loader";
 import SaveCloseButtons from "../components/SaveCloseButtons";
+import { useGlobals } from "../hooks/useGlobals";
 import { useIoBrokerObject } from "../hooks/useIoBrokerObject";
 import { decrypt } from "../shared/tools";
 import { IoBrokerApp, IoBrokerAppProps } from "./IoBrokerApp";
 
-export interface SettingsAppProps extends IoBrokerAppProps {
+export interface SettingsAppProps {
 	afterLoad?(settings: Record<string, any>): void;
 	beforeSave?(settings: Record<string, any>): boolean | undefined;
 	encryptedFields?: string[];
@@ -16,6 +17,7 @@ interface ISettingsContext<
 	T extends Record<string, any> = Record<string, any>,
 > {
 	settings: T;
+	originalSettings: Readonly<T>;
 	setSettings: React.Dispatch<React.SetStateAction<T>>;
 	setError: (hasError: boolean) => void;
 }
@@ -49,6 +51,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		main: {
 			flex: "1 1 auto",
+			padding: theme.spacing(2, 4),
 		},
 		buttons: {
 			flex: "0 0 auto",
@@ -71,9 +74,7 @@ const closeSettingsWindow = () => {
 	}
 };
 
-const SettingsAppContent: React.FC<Omit<SettingsAppProps, "name">> = (
-	props,
-) => {
+const SettingsAppContent: React.FC<SettingsAppProps> = (props) => {
 	const [settings, setSettings] = React.useState<Record<string, any>>();
 
 	const [systemConfigObj] = useIoBrokerObject("system.config");
@@ -81,6 +82,7 @@ const SettingsAppContent: React.FC<Omit<SettingsAppProps, "name">> = (
 	const secret = systemConfigObj?.native?.secret || "Zgfr56gFe87jJOM";
 
 	// Parse and decrypt settings when instance object is loaded or changed
+	const { namespace } = useGlobals();
 	const [instanceObj, extendInstanceObj] = useIoBrokerObject(
 		`system.adapter.${namespace}`,
 	);
@@ -140,7 +142,12 @@ const SettingsAppContent: React.FC<Omit<SettingsAppProps, "name">> = (
 	const classes = useStyles();
 	return settings ? (
 		<SettingsContext.Provider
-			value={{ settings, setSettings, setError: setHasErrors }}
+			value={{
+				settings,
+				setSettings,
+				originalSettings: Object.freeze(originalSettings!),
+				setError: setHasErrors,
+			}}
 		>
 			<div className={classes.root}>
 				<div className={classes.main}>{props.children}</div>
@@ -162,9 +169,13 @@ const SettingsAppContent: React.FC<Omit<SettingsAppProps, "name">> = (
 	);
 };
 
-export const SettingsApp: React.FC<SettingsAppProps> = ({ name, ...props }) => {
+export const SettingsApp: React.FC<SettingsAppProps & IoBrokerAppProps> = ({
+	name,
+	translations,
+	...props
+}) => {
 	return (
-		<IoBrokerApp name={name}>
+		<IoBrokerApp name={name} translations={translations}>
 			<SettingsAppContent {...props} />
 		</IoBrokerApp>
 	);

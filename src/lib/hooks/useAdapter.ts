@@ -1,5 +1,6 @@
-import { useIoBrokerState } from "./useIoBrokerState";
 import React from "react";
+import { useGlobals } from "./useGlobals";
+import { useIoBrokerState } from "./useIoBrokerState";
 
 export interface AdapterContextData {
 	alive: boolean;
@@ -13,7 +14,7 @@ export const AdapterContext = React.createContext<AdapterContextData>({
 
 /** Hook to subscribe to the adapter's `alive` and `connected` states */
 export function useAdapter(): AdapterContextData {
-	const namespace = `${adapter}.${instance}`;
+	const { namespace } = useGlobals();
 	const aliveId = `system.adapter.${namespace}.alive`;
 	const connectedId = `${namespace}.info.connection`;
 

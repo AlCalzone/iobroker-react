@@ -1,27 +1,20 @@
 import { Connection, ConnectionProps } from "@iobroker/socket-client";
 import { ThemeProvider } from "@material-ui/core";
+import { extend } from "alcalzone-shared/objects";
 import React from "react";
 import { ConnectionContext } from "../hooks/useConnection";
+import { GlobalsContext } from "../hooks/useGlobals";
+import { defaultTranslations, I18n, I18nContext, Translations } from "../i18n";
 import type { ThemeType as ThemeName } from "../shared/theme";
 import getTheme from "../shared/theme";
 
-// Little workaround
-(window as any).adapter ??= window.location.pathname.split("/")[2]; // "/adapter/zwave2/tab_m.html"
-(window as any).instance ??=
-	new URLSearchParams(window.location.search).get("instance") ?? // ?instance=0
-	parseInt(
-		/config\/system\.adapter\.[^\.]+(?<instance>\d+)/i.exec(
-			window.location.hash,
-		)?.groups?.instance ?? "0",
-		10,
-	);
-(window as any).namespace ??= `${adapter}.${instance}`;
 (window as any)._ ??= (a: any) => a;
 
 // layout components
 export interface IoBrokerAppProps {
 	name: ConnectionProps["name"];
 	theme?: ThemeName;
+	translations?: Translations;
 }
 
 const ThemeSwitcherContext = React.createContext<(theme: ThemeName) => void>(
@@ -56,7 +49,19 @@ export const useThemeSwitcher = () => React.useContext(ThemeSwitcherContext);
  * ```
  */
 export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
-	const { name, theme = "light" } = props;
+	const { name, theme = "light", translations = {} } = props;
+
+	// Manage translations
+	const i18nRef = React.useRef(
+		new I18n(extend({}, defaultTranslations, translations)),
+	);
+	const {
+		language,
+		setLanguage,
+		extendTranslations,
+		setTranslations,
+		translate,
+	} = i18nRef.current;
 
 	// Manage connection
 	const [connection, setConnection] = React.useState<Connection>();
@@ -65,26 +70,63 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 			name,
 			onReady: () => {
 				setConnection(_connection);
+				setLanguage(_connection.systemLang);
+				console.log(_connection.systemLang);
 			},
 			onError: (err) => {
 				console.error(err);
 			},
 		});
-	}, [name]);
+	}, [name, setLanguage]);
 
 	// Manage themes
 	const [themeName, setThemeName] = React.useState<ThemeName>(theme);
 	const themeInstance = getTheme(themeName);
 
-	return connection ? (
-		<ThemeSwitcherContext.Provider value={setThemeName}>
-			<ThemeProvider theme={themeInstance}>
-				<ConnectionContext.Provider value={connection}>
-					{props.children}
-				</ConnectionContext.Provider>
-			</ThemeProvider>
-		</ThemeSwitcherContext.Provider>
-	) : (
-		<>loading...</>
+	// Manage globals
+	const adminConfigMatch =
+		/config\/system\.adapter\.(?<adapter>[^\.]+)\.(?<instance>\d+)/i.exec(
+			window.location.hash,
+		); // tab-instances/config/system.adapter.zwave2.0
+	const tabRegexMatch = /adapter\/(?<adapter>[^\/]+)/i.exec(
+		window.location.pathname,
+	); // /adapter/zwave2/tab_m.html?instance=0
+	const adapter =
+		adminConfigMatch?.groups?.adapter ??
+		tabRegexMatch?.groups?.adapter ??
+		"admin"; // ???
+	const instance = parseInt(
+		new URLSearchParams(window.location.search).get("instance") ??
+			adminConfigMatch?.groups?.instance ??
+			tabRegexMatch?.groups?.instance ??
+			"0",
+		10,
+	);
+	const namespace = `${adapter}.${instance}` as const;
+
+	return (
+		<GlobalsContext.Provider value={{ adapter, instance, namespace }}>
+			<ThemeSwitcherContext.Provider value={setThemeName}>
+				<ThemeProvider theme={themeInstance}>
+					{connection ? (
+						<ConnectionContext.Provider value={connection}>
+							<I18nContext.Provider
+								value={{
+									language,
+									setLanguage,
+									extendTranslations,
+									setTranslations,
+									translate,
+								}}
+							>
+								{props.children}
+							</I18nContext.Provider>
+						</ConnectionContext.Provider>
+					) : (
+						<>loading...</>
+					)}
+				</ThemeProvider>
+			</ThemeSwitcherContext.Provider>
+		</GlobalsContext.Provider>
 	);
 };
