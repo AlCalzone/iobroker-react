@@ -1,0 +1,340 @@
+import orange from "@material-ui/core/colors/orange";
+import type { PaperClassKey } from "@material-ui/core/Paper";
+import {
+	createTheme,
+	StyleRules,
+	Theme,
+	ThemeOptions,
+} from "@material-ui/core/styles";
+import { padStart } from "alcalzone-shared/strings";
+
+export type ThemeType = "light" | "dark" | "colored" | "blue";
+
+declare module "@material-ui/core/styles" {
+	interface Theme {
+		name: ThemeType;
+		toolbar: {
+			height: number;
+		};
+		saveToolbar: {
+			background: string;
+			button: {
+				borderRadius: number;
+				height: number;
+			};
+		};
+	}
+	interface ThemeOptions {
+		name: ThemeType;
+		toolbar: {
+			height: number;
+		};
+		saveToolbar: {
+			background: string;
+			button: {
+				borderRadius: number;
+				height: number;
+			};
+		};
+	}
+}
+
+declare module "@material-ui/core/styles/createPalette" {
+	interface Palette {
+		expert: Palette["primary"];
+	}
+	interface PaletteOptions {
+		expert: PaletteOptions["primary"];
+	}
+}
+
+const step = (16 - 5) / 23 / 100;
+
+/**
+ * Convert hex color in the format '#rrggbb' or '#rgb' to an RGB object.
+ */
+function toInt(hex: string): { r: number; g: number; b: number } {
+	const rgb = {
+		r: 0,
+		g: 0,
+		b: 0,
+	};
+
+	if (hex.length === 7) {
+		rgb.r = parseInt(hex.substr(1, 2), 16);
+		rgb.g = parseInt(hex.substr(3, 2), 16);
+		rgb.b = parseInt(hex.substr(5, 2), 16);
+	} else if (hex.length === 4) {
+		const r = hex.substr(1, 1);
+		const g = hex.substr(2, 1);
+		const b = hex.substr(3, 1);
+
+		rgb.r = parseInt(r + r, 16);
+		rgb.g = parseInt(g + g, 16);
+		rgb.b = parseInt(b + b, 16);
+	}
+
+	return rgb;
+}
+
+/**
+ * Convert an RGB object to a hex color string in the format '#rrggbb'.
+ */
+function toHex(int: { r: number; g: number; b: number }): string {
+	return `#${padStart(Math.round(int.r).toString(16), 2, "0")}${padStart(
+		Math.round(int.g).toString(16),
+		2,
+		"0",
+	)}${padStart(Math.round(int.b).toString(16), 2, "0")}`;
+}
+
+/**
+ * @param color color in the format '#rrggbb' or '#rgb'
+ * @param overlayColor overlay color in the format '#rrggbb' or '#rgb'
+ * @param elevation elevation as an integer starting with 1
+ * @returns the hex color string in the format '#rrggbb'
+ */
+function getElevation(
+	color: string,
+	overlayColor: string,
+	elevation: number,
+): string {
+	const rgb = toInt(color);
+	const overlay = toInt(overlayColor);
+
+	rgb.r += overlay.r * (0.05 + step * (elevation - 1));
+	rgb.g += overlay.g * (0.05 + step * (elevation - 1));
+	rgb.b += overlay.b * (0.05 + step * (elevation - 1));
+
+	return toHex(rgb);
+}
+
+/**
+ * Get all 24 elevations of the given color and overlay.
+ * @param {string} color color in the format '#rrggbb' or '#rgb'
+ * @param {string} overlay overlay color in the format '#rrggbb' or '#rgb'
+ */
+function getElevations(
+	color: string,
+	overlay: string,
+	// eslint-disable-next-line @typescript-eslint/ban-types
+): Partial<StyleRules<PaperClassKey, {}>> {
+	const elevations: Record<string, any> = {};
+
+	for (let i = 1; i <= 24; i++) {
+		elevations[`elevation${i}`] = {
+			backgroundColor: getElevation(color, overlay, i),
+		};
+	}
+
+	return elevations;
+}
+
+/**
+ * The theme creation factory function.
+ */
+const getTheme = (type: ThemeType): Theme => {
+	let theme: ThemeOptions;
+	if (type === "dark") {
+		// @ts-expect-error This is fine!
+		theme = {
+			name: type,
+			palette: {
+				type: "dark",
+				background: {
+					paper: "#121212",
+					default: "#121212",
+				},
+				primary: {
+					main: "#4dabf5",
+				},
+				secondary: {
+					main: "#436a93",
+				},
+				expert: {
+					main: "#14bb00",
+				},
+				text: {
+					primary: "#ffffff",
+					secondary: "#ffffff",
+				},
+			},
+			overrides: {
+				MuiAppBar: {
+					colorDefault: {
+						backgroundColor: "#272727",
+					},
+				},
+				MuiLink: {
+					root: {
+						textTransform: "uppercase",
+						transition: "color .3s ease",
+						color: orange[200],
+						"&:hover": {
+							color: orange[100],
+						},
+					},
+				},
+				MuiPaper: getElevations("#121212", "#fff"),
+			},
+		};
+	} else if (type === "blue") {
+		// @ts-expect-error This is fine!
+		theme = {
+			name: type,
+			palette: {
+				type: "dark",
+				background: {
+					paper: "#151d21",
+					default: "#151d21",
+				},
+				primary: {
+					main: "#4dabf5",
+				},
+				secondary: {
+					main: "#436a93",
+				},
+				expert: {
+					main: "#14bb00",
+				},
+				text: {
+					primary: "#ffffff",
+					secondary: "#ffffff",
+				},
+			},
+			overrides: {
+				MuiAppBar: {
+					colorDefault: {
+						backgroundColor: "#2a3135",
+					},
+				},
+				MuiLink: {
+					root: {
+						textTransform: "uppercase",
+						transition: "color .3s ease",
+						color: orange[200],
+						"&:hover": {
+							color: orange[100],
+						},
+					},
+				},
+				MuiPaper: getElevations("#151d21", "#fff"),
+			},
+		};
+	} else if (type === "colored") {
+		// @ts-expect-error This is fine!
+		theme = {
+			name: type,
+			palette: {
+				type: "light",
+				primary: {
+					main: "#3399CC",
+				},
+				secondary: {
+					main: "#164477",
+				},
+				expert: {
+					main: "#96fc96",
+				},
+			},
+			overrides: {
+				MuiAppBar: {
+					colorDefault: {
+						backgroundColor: "#3399CC",
+					},
+				},
+				MuiLink: {
+					root: {
+						textTransform: "uppercase",
+						transition: "color .3s ease",
+						color: orange[400],
+						"&:hover": {
+							color: orange[300],
+						},
+					},
+				},
+			},
+		};
+		// } else if (type === "PT") {
+		// 	// @ts-expect-error This is fine!
+		// 	theme = {
+		// 		name: type,
+		// 		palette: {
+		// 			type: "light",
+		// 			primary: {
+		// 				main: "#0F99DE",
+		// 			},
+		// 			secondary: {
+		// 				main: "#88A536",
+		// 			},
+		// 			expert: {
+		// 				main: "#BD1B24",
+		// 			},
+		// 		},
+		// 		overrides: {
+		// 			MuiAppBar: {
+		// 				colorDefault: {
+		// 					backgroundColor: "#0F99DE",
+		// 				},
+		// 			},
+		// 			MuiLink: {
+		// 				root: {
+		// 					textTransform: "uppercase",
+		// 					transition: "color .3s ease",
+		// 					color: orange[400],
+		// 					"&:hover": {
+		// 						color: orange[300],
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	};
+	} else {
+		// @ts-expect-error This is fine!
+		theme = {
+			name: type as any,
+			palette: {
+				type: "light",
+				primary: {
+					main: "#3399CC",
+				},
+				secondary: {
+					main: "#164477",
+				},
+				expert: {
+					main: "#14bb00",
+				},
+			},
+			overrides: {
+				MuiLink: {
+					root: {
+						textTransform: "uppercase",
+						transition: "color .3s ease",
+						color: orange[400],
+						"&:hover": {
+							color: orange[300],
+						},
+					},
+				},
+			},
+		};
+	}
+
+	theme.toolbar = {
+		height: 48,
+	};
+
+	// add save toolbar
+	theme.saveToolbar = {
+		// @ts-expect-error This is fine!
+		background: theme.palette.primary.main,
+		button: {
+			borderRadius: 3,
+			height: 32,
+		},
+	};
+
+	return createTheme(theme);
+};
+
+export default getTheme;

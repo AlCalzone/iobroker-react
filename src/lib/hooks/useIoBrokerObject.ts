@@ -6,8 +6,14 @@ export interface UseIoBrokerObjectOptions {
 	subscribe?: boolean;
 }
 
+type BoundExtendObject<T extends string = string> = (
+	obj: ioBroker.PartialObject & {
+		type?: ioBroker.ObjectIdToObjectType<T>["type"];
+	},
+) => Promise<void>;
+
 /**
- * Hook to read or subscribe to an object within ioBroker.
+ * Hook to read/subscribe to an object within ioBroker or update it using extendObject.
  * @param objectId The object id to access
  *
  * The component must be wrapped in an `IoBrokerApp` or one of its variants. Example:
@@ -15,7 +21,15 @@ export interface UseIoBrokerObjectOptions {
  * import { useIoBrokerObject } from "iobroker-react/hooks";
  *
  * const MyComponent: React.FC<MyAppProps> = (props) => {
- *   const myObject = useIoBrokerObject("my-adapter.0.device1");
+ *   const [myObject, extendMyObject] = useIoBrokerObject("my-adapter.0.device1");
+ *
+ *   React.useEffect(() => {
+ *     // Sets common.test to "test" after 1 second
+ *     setTimeout(
+ *       () => extendMyObject({common: {test: "test"}}),
+ *       1000
+ *     );
+ *   }, []);
  *
  *   return (
  *     <div>{myObject?.common.name ?? "UNKNOWN"}</div>
@@ -26,7 +40,10 @@ export interface UseIoBrokerObjectOptions {
 export function useIoBrokerObject<T extends string>(
 	objectId: T,
 	options: UseIoBrokerObjectOptions = {},
-): ioBroker.ObjectIdToObjectType<T> | undefined {
+): readonly [
+	object: ioBroker.ObjectIdToObjectType<T> | undefined,
+	extendObject: BoundExtendObject<T>,
+] {
 	const { subscribe = true } = options;
 
 	const [object, setObject] = React.useState<ioBroker.Object>();
@@ -54,5 +71,12 @@ export function useIoBrokerObject<T extends string>(
 		};
 	}, [connection, objectId, subscribe]);
 
-	return object as ioBroker.ObjectIdToObjectType<T> | undefined;
+	const extendObject: BoundExtendObject<T> = (obj) => {
+		return connection.extendObject(objectId, obj);
+	};
+
+	return [object, extendObject] as readonly [
+		ioBroker.ObjectIdToObjectType<T> | undefined,
+		BoundExtendObject<T>,
+	];
 }

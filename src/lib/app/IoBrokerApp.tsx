@@ -1,6 +1,9 @@
-import React from "react";
 import { Connection, ConnectionProps } from "@iobroker/socket-client";
+import { ThemeProvider } from "@material-ui/core";
+import React from "react";
 import { ConnectionContext } from "../hooks/useConnection";
+import type { ThemeType as ThemeName } from "../shared/theme";
+import getTheme from "../shared/theme";
 
 // Little workaround
 (window as any).adapter ??= window.location.pathname.split("/")[2]; // "/adapter/zwave2/tab_m.html"
@@ -18,7 +21,16 @@ import { ConnectionContext } from "../hooks/useConnection";
 // layout components
 export interface IoBrokerAppProps {
 	name: ConnectionProps["name"];
+	theme?: ThemeName;
 }
+
+const ThemeSwitcherContext = React.createContext<(theme: ThemeName) => void>(
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
+	() => {},
+);
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const useThemeSwitcher = () => React.useContext(ThemeSwitcherContext);
 
 /**
  * The basis for all ioBroker apps. Wrap your app in this component. Example:
@@ -44,11 +56,13 @@ export interface IoBrokerAppProps {
  * ```
  */
 export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
-	const [connection, setConnection] = React.useState<Connection>();
+	const { name, theme = "light" } = props;
 
+	// Manage connection
+	const [connection, setConnection] = React.useState<Connection>();
 	React.useEffect(() => {
 		const _connection = new Connection({
-			name: props.name,
+			name,
 			onReady: () => {
 				setConnection(_connection);
 			},
@@ -56,12 +70,20 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 				console.error(err);
 			},
 		});
-	}, [props.name]);
+	}, [name]);
+
+	// Manage themes
+	const [themeName, setThemeName] = React.useState<ThemeName>(theme);
+	const themeInstance = getTheme(themeName);
 
 	return connection ? (
-		<ConnectionContext.Provider value={connection}>
-			{props.children}
-		</ConnectionContext.Provider>
+		<ThemeSwitcherContext.Provider value={setThemeName}>
+			<ThemeProvider theme={themeInstance}>
+				<ConnectionContext.Provider value={connection}>
+					{props.children}
+				</ConnectionContext.Provider>
+			</ThemeProvider>
+		</ThemeSwitcherContext.Provider>
 	) : (
 		<>loading...</>
 	);

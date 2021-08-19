@@ -8,3 +8,4 @@ export {
 	useIoBrokerState,
 	UseIoBrokerStateOptions,
 } from "./lib/hooks/useIoBrokerState";
+export { useSettings } from "./lib/app/SettingsApp";
