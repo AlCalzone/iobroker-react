@@ -118,6 +118,7 @@ export class I18n {
 	 */
 	public translate(word: string, ...args: string[]): string {
 		const translation = this.translations[this._language];
+		// console.log(`translate ${word}: translation = ${translation?.[word]}`);
 		if (translation) {
 			const w = translation[word];
 			if (w) {

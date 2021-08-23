@@ -2,7 +2,15 @@ import { Connection, ConnectionProps } from "@iobroker/socket-client";
 import { ThemeProvider } from "@material-ui/core";
 import { extend } from "alcalzone-shared/objects";
 import React from "react";
+import type { ModalState, ShowModal } from "../components/ModalDialog";
+import { ModalDialog } from "../components/ModalDialog";
+import type {
+	NotificationState,
+	ShowNotification,
+} from "../components/Notification";
+import { Notification } from "../components/Notification";
 import { ConnectionContext } from "../hooks/useConnection";
+import { DialogsContext } from "../hooks/useDialogs";
 import { GlobalsContext } from "../hooks/useGlobals";
 import { defaultTranslations, I18n, I18nContext, Translations } from "../i18n";
 import type { ThemeType as ThemeName } from "../shared/theme";
@@ -108,6 +116,58 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 	);
 	const namespace = `${adapter}.${instance}` as const;
 
+	// Simplify access to dialogs and notifications
+	const [notificationState, setNotificationState] =
+		React.useState<NotificationState>({
+			isOpen: false,
+			message: "",
+			variant: "info",
+		});
+	const [modalState, setModalState] = React.useState<ModalState>({
+		isOpen: false,
+		title: "",
+		message: "",
+		yesButtonText: "Ja",
+		noButtonText: "Nein",
+		showNoButton: true,
+		showYesButton: true,
+		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		onClose: () => {},
+	});
+
+	const showNotification: ShowNotification = (message, variant, timeout) => {
+		setNotificationState({
+			isOpen: true,
+			message,
+			variant,
+			timeout,
+		});
+	};
+	const hideNotification = () => {
+		setNotificationState({ ...notificationState, isOpen: false });
+	};
+
+	const hideModal = () => {
+		setModalState((modalState) => ({ ...modalState, isOpen: false }));
+	};
+	const showModal: ShowModal = (title, text, options) => {
+		return new Promise((resolve) => {
+			setModalState({
+				isOpen: true,
+				title,
+				message: text,
+				onClose: (result) => {
+					hideModal();
+					resolve(result);
+				},
+				yesButtonText: options?.yesButtonText ?? "Ja",
+				noButtonText: options?.noButtonText ?? "Nein",
+				showNoButton: options?.showNoButton ?? true,
+				showYesButton: options?.showYesButton ?? true,
+			});
+		});
+	};
+
 	return (
 		<GlobalsContext.Provider value={{ adapter, instance, namespace }}>
 			<ThemeSwitcherContext.Provider value={setThemeName}>
@@ -123,7 +183,22 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 									translate,
 								}}
 							>
-								{props.children}
+								<DialogsContext.Provider
+									value={{
+										showNotification,
+										showModal,
+										hideModal,
+									}}
+								>
+									{props.children}
+
+									{/* TODO: Maybe memo these: */}
+									<Notification
+										{...notificationState}
+										onClose={hideNotification}
+									/>
+									<ModalDialog {...modalState} />
+								</DialogsContext.Provider>
 							</I18nContext.Provider>
 						</ConnectionContext.Provider>
 					) : (
