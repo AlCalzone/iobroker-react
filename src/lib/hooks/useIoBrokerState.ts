@@ -74,70 +74,64 @@ export function useIoBrokerState<
 		transform,
 	} = options;
 
-	const [{ value, ack }, setValue] = React.useState<{
-		value: T | undefined;
-		ack: boolean;
-	}>({
-		value: defaultValue,
-		ack: defaultAck,
-	});
+	const [value, setValue] = React.useState<T | undefined>(defaultValue);
+	const [ack, setAck] = React.useState(defaultAck);
 
 	const connection = useConnection();
 
-	React.useEffect(() => {
-		const onStateChange: ioBroker.StateChangeHandler = (
-			changedId,
-			state,
-		) => {
+	const updateValue: BoundSetState = React.useCallback(
+		(state) => {
+			// While updating a value on the server, update it locally with ACK = false
+			// so the UI can show a response immediately
+			if (isObject(state)) {
+				if ("val" in state) setValue(state.val as T);
+				if ("ack" in state) setAck(state.ack);
+			} else {
+				setValue(state as T);
+				setAck(false);
+			}
+
+			// And update it on the server asynchronously
+			return connection.setState(writeId, state);
+		},
+		[connection, writeId],
+	);
+
+	const onStateChange: ioBroker.StateChangeHandler = React.useCallback(
+		(changedId, state) => {
 			if (state && state.ack && changedId === id) {
 				const value = state.val as T;
-				setValue({
-					value: transform ? transform(value) : value,
-					ack: state.ack,
-				});
+				setValue(transform ? transform(value) : value);
+				setAck(state.ack);
 			}
-		};
+		},
+		[id, transform],
+	);
 
-		(async () => {
-			// Load value initially
-			if (subscribe) {
-				// After subscription, the value will be updated automatically
-				await connection.subscribeState(id, onStateChange);
-			} else {
-				// Only load the value
-				const initial = await connection.getState(id);
-				const val = (initial?.val ?? defaultValue) as T;
-				const ack = initial?.ack ?? defaultAck;
-				setValue({
-					value: transform ? transform(val) : val,
-					ack,
-				});
-			}
-		})();
+	const loadInitial = React.useCallback(async () => {
+		// Only load the value
+		const initial = await connection.getState(id);
+		const value = (initial?.val ?? defaultValue) as T;
+		const ack = initial?.ack ?? defaultAck;
+
+		setValue(value);
+		setAck(ack);
+	}, [connection, defaultAck, defaultValue, id]);
+
+	React.useEffect(() => {
+		// Load value initially
+		if (subscribe) {
+			// After subscription, the value will be updated automatically
+			connection.subscribeState(id, onStateChange);
+		} else {
+			loadInitial();
+		}
 
 		// componentWillUnmount
 		return () => {
 			if (subscribe) connection.unsubscribeState(id, onStateChange);
 		};
-	}, [connection, defaultAck, defaultValue, id, subscribe, transform]);
-
-	const updateValue: BoundSetState = (state) => {
-		// While updating a value on the server, update it locally with ACK = false
-		// so the UI can show a response immediately
-		setValue((cur) => {
-			const value = (
-				isObject(state)
-					? "val" in state
-						? state.val
-						: cur.value
-					: state
-			) as T;
-			const ack = isObject(state) && "ack" in state ? state.ack : false;
-			return { value, ack };
-		});
-		// And update it on the server asynchronously
-		return connection.setState(writeId, state);
-	};
+	}, [connection, id, loadInitial, onStateChange, subscribe]);
 
 	return [value, ack, updateValue] as const;
 }
