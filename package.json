@@ -32,7 +32,7 @@
     }
   },
   "files": [
-    "build/**/*.{js,d.ts,map}"
+    "build/**/*.{js,d.ts,map,json}"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
