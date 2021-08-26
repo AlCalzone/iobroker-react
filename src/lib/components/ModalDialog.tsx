@@ -9,26 +9,28 @@ import * as React from "react";
 export interface ModalDialogProps {
 	title: string;
 	message: React.ReactNode | string;
-	yesButtonText: string;
-	noButtonText: string;
-	showYesButton: boolean;
-	showNoButton: boolean;
 	isOpen?: boolean;
-	onClose: (result: boolean) => void;
+
+	showYesButton: boolean;
+	yesButtonEnabled?: boolean;
+	yesButtonText: string;
+	yesButtonClick: () => void;
+
+	showNoButton: boolean;
+	noButtonEnabled?: boolean;
+	noButtonText: string;
+	noButtonClick: () => void;
+
+	/**
+	 * Will be called when the user tries to close the dialog.
+	 * If this callback returns `false`, the dialog will not close.
+	 */
+	onClose: () => boolean | void;
 }
 
 export type ModalState = {
 	isOpen: boolean;
-} & Pick<
-	ModalDialogProps,
-	| "title"
-	| "message"
-	| "yesButtonText"
-	| "noButtonText"
-	| "showNoButton"
-	| "showYesButton"
-	| "onClose"
->;
+} & Omit<ModalDialogProps, "isOpen">;
 
 export type ShowModal = (
 	title: string,
@@ -36,6 +38,8 @@ export type ShowModal = (
 	options?: Partial<{
 		yesButtonText: string;
 		noButtonText: string;
+		yesButtonEnabled: boolean;
+		noButtonEnabled: boolean;
 		showNoButton: boolean;
 		showYesButton: boolean;
 	}>,
@@ -48,55 +52,54 @@ export const ModalDialog: React.FC<ModalDialogProps> = (props) => {
 		setOpen(props.isOpen ?? false);
 	}, [props.isOpen]);
 
-	function handleClose(result: boolean) {
-		setOpen(false);
-		props.onClose(result);
-	}
+	const handleClose = React.useCallback(() => {
+		// Ask the application whether the dialog should close
+		console.log("handleClose");
+		if (props.onClose() !== false) setOpen(false);
+	}, [props]);
 
 	return (
 		<Dialog
 			open={isOpen}
-			onClose={() => handleClose(false)}
+			onClose={handleClose}
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 			maxWidth={false}
 		>
 			<DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
 			<DialogContent>
-				<DialogContentText
-					id="alert-dialog-description"
-					dangerouslySetInnerHTML={
-						typeof props.message === "string"
-							? {
-									__html: props.message.replace(
-										/\n/g,
-										"<br />",
-									),
-							  }
-							: undefined
-					}
-					children={
-						typeof props.message !== "string"
-							? props.message
-							: undefined
-					}
-				/>
+				{typeof props.message === "string" ? (
+					<DialogContentText
+						id="alert-dialog-description"
+						dangerouslySetInnerHTML={{
+							__html: props.message.replace(/\n/g, "<br />"),
+						}}
+					/>
+				) : (
+					props.message
+				)}
 			</DialogContent>
 			{(props.showYesButton || props.showNoButton) && (
 				<DialogActions>
 					{props.showYesButton && (
 						<Button
-							onClick={() => handleClose(true)}
+							onClick={() => {
+								props?.yesButtonClick?.();
+							}}
 							color="primary"
 							autoFocus
+							disabled={props.yesButtonEnabled === false}
 						>
 							{props.yesButtonText}
 						</Button>
 					)}
 					{props.showNoButton && (
 						<Button
-							onClick={() => handleClose(false)}
+							onClick={() => {
+								props?.noButtonClick?.();
+							}}
 							color="primary"
+							disabled={props.noButtonEnabled === false}
 						>
 							{props.noButtonText}
 						</Button>

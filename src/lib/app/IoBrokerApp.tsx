@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import { Connection, ConnectionProps } from "@iobroker/socket-client";
 import { ThemeProvider } from "@material-ui/core";
 import { extend } from "alcalzone-shared/objects";
@@ -127,12 +128,13 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 		isOpen: false,
 		title: "",
 		message: "",
-		yesButtonText: "Ja",
-		noButtonText: "Nein",
-		showNoButton: true,
 		showYesButton: true,
-		// eslint-disable-next-line @typescript-eslint/no-empty-function
+		yesButtonText: "Ja",
+		showNoButton: true,
+		noButtonText: "Nein",
 		onClose: () => {},
+		yesButtonClick: () => {},
+		noButtonClick: () => {},
 	});
 
 	const showNotification: ShowNotification = (message, variant, timeout) => {
@@ -156,14 +158,23 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 				isOpen: true,
 				title,
 				message: text,
-				onClose: (result) => {
+				onClose: () => {
 					hideModal();
-					resolve(result);
+					resolve(false);
 				},
-				yesButtonText: options?.yesButtonText ?? "Ja",
-				noButtonText: options?.noButtonText ?? "Nein",
-				showNoButton: options?.showNoButton ?? true,
 				showYesButton: options?.showYesButton ?? true,
+				yesButtonText: options?.yesButtonText ?? "Ja",
+				showNoButton: options?.showNoButton ?? true,
+				noButtonText: options?.noButtonText ?? "Nein",
+
+				yesButtonClick: () => {
+					hideModal();
+					resolve(true);
+				},
+				noButtonClick: () => {
+					hideModal();
+					resolve(false);
+				},
 			});
 		});
 	};

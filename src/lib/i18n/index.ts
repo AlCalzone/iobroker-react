@@ -124,7 +124,7 @@ export class I18n {
 			if (w) {
 				word = w;
 			} else {
-				console.warn(`Translation missing: ${word}`);
+				// console.warn(`Translation missing: ${word}`);
 			}
 		}
 		for (const arg of args) {
