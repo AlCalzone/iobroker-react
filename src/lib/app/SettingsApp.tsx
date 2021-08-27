@@ -1,9 +1,9 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
 import React from "react";
-import Loader from "../components/Loader";
 import SaveCloseButtons from "../components/SaveCloseButtons";
 import { useGlobals } from "../hooks/useGlobals";
 import { useIoBrokerObject } from "../hooks/useIoBrokerObject";
+import { getErrorMessage } from "../shared/misc";
 import { decrypt } from "../shared/tools";
 import { IoBrokerApp, IoBrokerAppProps } from "./IoBrokerApp";
 
@@ -74,7 +74,9 @@ const closeSettingsWindow = () => {
 	}
 };
 
-const SettingsAppContent: React.FC<SettingsAppProps> = (props) => {
+const SettingsAppContent: React.FC<
+	SettingsAppProps & { onSettingsLoaded: () => void }
+> = (props) => {
 	const [settings, setSettings] = React.useState<Record<string, any>>();
 
 	const [systemConfigObj] = useIoBrokerObject("system.config");
@@ -99,8 +101,12 @@ const SettingsAppContent: React.FC<SettingsAppProps> = (props) => {
 			if (typeof props.afterLoad === "function") {
 				props.afterLoad(settings);
 			}
+
 			setSettings(settings);
 			setOriginalSettings({ ...settings });
+
+			// Notify that the settings are loaded and the spinner can be hidden
+			props.onSettingsLoaded();
 		}
 	}, [instanceObj, props, secret]);
 	// TODO: Timeout when loading settings fails
@@ -135,37 +141,39 @@ const SettingsAppContent: React.FC<SettingsAppProps> = (props) => {
 			setOriginalSettings(newNative);
 			if (close) closeSettingsWindow();
 		} catch (e) {
-			console.error(`Cannot save configuration: ${e}`);
+			console.error(`Cannot save configuration: ${getErrorMessage(e)}`);
 		}
 	};
 
 	const classes = useStyles();
-	return settings ? (
-		<SettingsContext.Provider
-			value={{
-				settings,
-				setSettings,
-				originalSettings: Object.freeze(originalSettings!),
-				setError: setHasErrors,
-			}}
-		>
-			<div className={classes.root}>
-				<div className={classes.main}>{props.children}</div>
-				<div className={classes.buttons}>
-					<SaveCloseButtons
-						// isIFrame={true}
-						noTextOnButtons={false}
-						// noTextOnButtons={this.state.width === 'xs' || this.state.width === 'sm' || this.state.width === 'md'}
-						changed={changed}
-						hasErrors={hasErrors}
-						onSave={onSave}
-						onClose={closeSettingsWindow}
-					/>
-				</div>
-			</div>
-		</SettingsContext.Provider>
-	) : (
-		<Loader theme="dark" />
+	return (
+		<>
+			{!!settings && (
+				<SettingsContext.Provider
+					value={{
+						settings,
+						setSettings,
+						originalSettings: Object.freeze(originalSettings!),
+						setError: setHasErrors,
+					}}
+				>
+					<div className={classes.root}>
+						<div className={classes.main}>{props.children}</div>
+						<div className={classes.buttons}>
+							<SaveCloseButtons
+								// isIFrame={true}
+								noTextOnButtons={false}
+								// noTextOnButtons={this.state.width === 'xs' || this.state.width === 'sm' || this.state.width === 'md'}
+								changed={changed}
+								hasErrors={hasErrors}
+								onSave={onSave}
+								onClose={closeSettingsWindow}
+							/>
+						</div>
+					</div>
+				</SettingsContext.Provider>
+			)}
+		</>
 	);
 };
 
@@ -174,9 +182,19 @@ export const SettingsApp: React.FC<SettingsAppProps & IoBrokerAppProps> = ({
 	translations,
 	...props
 }) => {
+	// Used to let the IoBrokerApp loading spinner be shown while the settings are loaded
+	const [contentReady, setContentReady] = React.useState(false);
+
 	return (
-		<IoBrokerApp name={name} translations={translations}>
-			<SettingsAppContent {...props} />
+		<IoBrokerApp
+			name={name}
+			translations={translations}
+			contentReady={contentReady}
+		>
+			<SettingsAppContent
+				{...props}
+				onSettingsLoaded={() => setContentReady(true)}
+			/>
 		</IoBrokerApp>
 	);
 };

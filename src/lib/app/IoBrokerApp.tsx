@@ -3,6 +3,7 @@ import { Connection, ConnectionProps } from "@iobroker/socket-client";
 import { ThemeProvider } from "@material-ui/core";
 import { extend } from "alcalzone-shared/objects";
 import React from "react";
+import Loader from "../components/Loader";
 import type { ModalState, ShowModal } from "../components/ModalDialog";
 import { ModalDialog } from "../components/ModalDialog";
 import type {
@@ -24,6 +25,8 @@ export interface IoBrokerAppProps {
 	name: ConnectionProps["name"];
 	theme?: ThemeName;
 	translations?: Translations;
+	/** When this prop exists, the loader will continue spinning until it is no longer `false` */
+	contentReady?: boolean;
 }
 
 const ThemeSwitcherContext = React.createContext<(theme: ThemeName) => void>(
@@ -179,11 +182,14 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 		});
 	};
 
+	const contentReady = !!connection && props.contentReady !== false;
+
 	return (
 		<GlobalsContext.Provider value={{ adapter, instance, namespace }}>
 			<ThemeSwitcherContext.Provider value={setThemeName}>
 				<ThemeProvider theme={themeInstance}>
-					{connection ? (
+					{!contentReady && <Loader theme="dark" />}
+					{connection && (
 						<ConnectionContext.Provider value={connection}>
 							<I18nContext.Provider
 								value={{
@@ -212,8 +218,6 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 								</DialogsContext.Provider>
 							</I18nContext.Provider>
 						</ConnectionContext.Provider>
-					) : (
-						<>loading...</>
 					)}
 				</ThemeProvider>
 			</ThemeSwitcherContext.Provider>

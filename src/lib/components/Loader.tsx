@@ -16,7 +16,7 @@ export interface LoaderProps {
 // TODO: convert .css file to styled components
 
 const Loader: React.FC<LoaderProps> = (props) => {
-	const { size = 50, theme = "light" } = props;
+	const { size = 234, theme = "light" } = props;
 	return (
 		<div className={`logo-back logo-background-${theme}`}>
 			<div
