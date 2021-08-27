@@ -188,7 +188,7 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 		<GlobalsContext.Provider value={{ adapter, instance, namespace }}>
 			<ThemeSwitcherContext.Provider value={setThemeName}>
 				<ThemeProvider theme={themeInstance}>
-					{!contentReady && <Loader theme="dark" />}
+					{!contentReady && <Loader />}
 					{connection && (
 						<ConnectionContext.Provider value={connection}>
 							<I18nContext.Provider

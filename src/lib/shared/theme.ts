@@ -8,6 +8,12 @@ import {
 } from "@material-ui/core/styles";
 import { padStart } from "alcalzone-shared/strings";
 
+/** The default ioBroker colors which are used for the logo. */
+const ioBrokerColors = {
+	lightBlue: "#3399cc",
+	darkBlue: "#164477",
+};
+
 export type ThemeType = "light" | "dark" | "colored" | "blue";
 
 declare module "@material-ui/core/styles" {
@@ -42,9 +48,23 @@ declare module "@material-ui/core/styles" {
 declare module "@material-ui/core/styles/createPalette" {
 	interface Palette {
 		expert: Palette["primary"];
+		logo: {
+			background: string;
+			start: string;
+			primary: string;
+			secondary: string;
+			grow: string;
+		};
 	}
 	interface PaletteOptions {
 		expert: PaletteOptions["primary"];
+		logo: {
+			background: string;
+			start: string;
+			primary: string;
+			secondary: string;
+			grow: string;
+		};
 	}
 }
 
@@ -151,12 +171,19 @@ const getTheme = (type: ThemeType): Theme => {
 				secondary: {
 					main: "#436a93",
 				},
-				expert: {
-					main: "#14bb00",
-				},
 				text: {
 					primary: "#ffffff",
 					secondary: "#ffffff",
+				},
+				expert: {
+					main: "#14bb00",
+				},
+				logo: {
+					background: "black",
+					start: "#040404",
+					primary: ioBrokerColors.lightBlue,
+					secondary: ioBrokerColors.darkBlue,
+					grow: "#1d1d1d",
 				},
 			},
 			overrides: {
@@ -194,12 +221,19 @@ const getTheme = (type: ThemeType): Theme => {
 				secondary: {
 					main: "#436a93",
 				},
-				expert: {
-					main: "#14bb00",
-				},
 				text: {
 					primary: "#ffffff",
 					secondary: "#ffffff",
+				},
+				expert: {
+					main: "#14bb00",
+				},
+				logo: {
+					background: "black",
+					start: "#040404",
+					primary: ioBrokerColors.lightBlue,
+					secondary: ioBrokerColors.darkBlue,
+					grow: "#1d1d1d",
 				},
 			},
 			overrides: {
@@ -235,6 +269,13 @@ const getTheme = (type: ThemeType): Theme => {
 				},
 				expert: {
 					main: "#96fc96",
+				},
+				logo: {
+					background: "white",
+					start: "#fefefe",
+					primary: ioBrokerColors.lightBlue,
+					secondary: ioBrokerColors.darkBlue,
+					grow: "#d0d0d0",
 				},
 			},
 			overrides: {
@@ -290,6 +331,7 @@ const getTheme = (type: ThemeType): Theme => {
 		// 		},
 		// 	};
 	} else {
+		// light
 		// @ts-expect-error This is fine!
 		theme = {
 			name: type as any,
@@ -303,6 +345,13 @@ const getTheme = (type: ThemeType): Theme => {
 				},
 				expert: {
 					main: "#14bb00",
+				},
+				logo: {
+					background: "white",
+					start: "#fefefe",
+					primary: ioBrokerColors.lightBlue,
+					secondary: ioBrokerColors.darkBlue,
+					grow: "#d0d0d0",
 				},
 			},
 			overrides: {
@@ -333,6 +382,9 @@ const getTheme = (type: ThemeType): Theme => {
 			height: 32,
 		},
 	};
+
+	// theme.logo = {
+	// 	primary
 
 	return createTheme(theme);
 };
