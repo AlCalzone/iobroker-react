@@ -1,7 +1,12 @@
 import Button from "@material-ui/core/Button";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import {
+	createStyles,
+	makeStyles,
+	Theme,
+	useTheme,
+} from "@material-ui/core/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import CloseIcon from "@material-ui/icons/Close";
-// import I18n from "../i18n";
 import SaveIcon from "@material-ui/icons/Save";
 import React from "react";
 import { useI18n } from "../i18n";
@@ -35,50 +40,83 @@ const SaveCloseButtons: React.FC<SaveCloseButtonsProps> = (props) => {
 	const { onSave, onClose, changed, hasErrors } = props;
 	const classes = useStyles();
 	const { translate } = useI18n();
+	const theme = useTheme();
+	const textOnButtons = useMediaQuery(theme.breakpoints.up("md"));
 
 	return (
 		<div className={classes.root}>
-			<Button
-				aria-label="Save"
-				variant="contained"
-				size="large"
-				// color="primary"
-				className={classes.button}
-				startIcon={<SaveIcon />}
-				onClick={() => onSave(false)}
-				disabled={!changed || !!hasErrors}
-			>
-				{translate("ra_Save")}
-				{/* {!noTextOnButtons && I18n.t("ra_Save")} */}
-			</Button>
-
-			<Button
-				aria-label="Save and Close"
-				variant="contained"
-				size="large"
-				// color="primary"
-				className={classes.button}
-				startIcon={<SaveIcon />}
-				onClick={() => onSave(true)}
-				disabled={!changed || !!hasErrors}
-			>
-				{translate("ra_Save and close")}
-				{/* {!noTextOnButtons && I18n.t("ra_Save")} */}
-			</Button>
-
-			<Button
-				aria-label="Close"
-				variant="contained"
-				size="large"
-				// color="default"
-				className={classes.button}
-				startIcon={<CloseIcon />}
-				onClick={onClose}
-				style={{ marginLeft: "auto" }}
-			>
-				{translate("ra_Close")}
-				{/* {!noTextOnButtons && I18n.t("ra_Save")} */}
-			</Button>
+			{textOnButtons ? (
+				<>
+					<Button
+						aria-label="Save"
+						variant="contained"
+						size="large"
+						className={classes.button}
+						startIcon={<SaveIcon />}
+						onClick={() => onSave(false)}
+						disabled={!changed || !!hasErrors}
+					>
+						{translate("ra_Save")}
+					</Button>
+					<Button
+						aria-label="Save and Close"
+						variant="contained"
+						size="large"
+						className={classes.button}
+						startIcon={<SaveIcon />}
+						onClick={() => onSave(true)}
+						disabled={!changed || !!hasErrors}
+					>
+						{translate("ra_Save and close")}
+					</Button>
+					<Button
+						aria-label="Close"
+						variant="contained"
+						size="large"
+						className={classes.button}
+						startIcon={<CloseIcon />}
+						onClick={onClose}
+						style={{ marginLeft: "auto" }}
+					>
+						{translate("ra_Close")}
+					</Button>
+				</>
+			) : (
+				<>
+					<Button
+						aria-label="Save"
+						variant="contained"
+						size="large"
+						className={classes.button}
+						onClick={() => onSave(false)}
+						disabled={!changed || !!hasErrors}
+					>
+						<SaveIcon />
+					</Button>
+					<Button
+						aria-label="Save and Close"
+						variant="contained"
+						size="large"
+						className={classes.button}
+						startIcon={<SaveIcon />}
+						endIcon={<CloseIcon />}
+						onClick={() => onSave(true)}
+						disabled={!changed || !!hasErrors}
+					>
+						+
+					</Button>
+					<Button
+						aria-label="Close"
+						variant="contained"
+						size="large"
+						className={classes.button}
+						onClick={onClose}
+						style={{ marginLeft: "auto" }}
+					>
+						<CloseIcon />
+					</Button>
+				</>
+			)}
 		</div>
 	);
 };

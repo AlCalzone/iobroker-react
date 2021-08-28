@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Connection, ConnectionProps } from "@iobroker/socket-client";
 import { ThemeProvider } from "@material-ui/core";
+import CssBaseline from "@material-ui/core/CssBaseline";
 import { extend } from "alcalzone-shared/objects";
 import React from "react";
 import Loader from "../components/Loader";
@@ -13,29 +14,20 @@ import type {
 import { Notification } from "../components/Notification";
 import { ConnectionContext } from "../hooks/useConnection";
 import { DialogsContext } from "../hooks/useDialogs";
+import { ExpertModeContext } from "../hooks/useExpertMode";
 import { GlobalsContext } from "../hooks/useGlobals";
+import { IoBrokerThemeContext } from "../hooks/useIoBrokerTheme";
+import { useWindowEvent } from "../hooks/useWindowEvent";
 import { defaultTranslations, I18n, I18nContext, Translations } from "../i18n";
-import type { ThemeType as ThemeName } from "../shared/theme";
-import getTheme from "../shared/theme";
-
-(window as any)._ ??= (a: any) => a;
+import getTheme, { getActiveTheme, ThemeName } from "../shared/theme";
 
 // layout components
 export interface IoBrokerAppProps {
 	name: ConnectionProps["name"];
-	theme?: ThemeName;
 	translations?: Translations;
 	/** When this prop exists, the loader will continue spinning until it is no longer `false` */
 	contentReady?: boolean;
 }
-
-const ThemeSwitcherContext = React.createContext<(theme: ThemeName) => void>(
-	// eslint-disable-next-line @typescript-eslint/no-empty-function
-	() => {},
-);
-
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const useThemeSwitcher = () => React.useContext(ThemeSwitcherContext);
 
 /**
  * The basis for all ioBroker apps. Wrap your app in this component. Example:
@@ -61,7 +53,7 @@ export const useThemeSwitcher = () => React.useContext(ThemeSwitcherContext);
  * ```
  */
 export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
-	const { name, theme = "light", translations = {} } = props;
+	const { name, translations = {} } = props;
 
 	// Manage translations
 	const [i18nInstance, setI18nInstance] = React.useState<I18n>({} as any);
@@ -96,8 +88,16 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 	}, [name, translations]);
 
 	// Manage themes
-	const [themeName, setThemeName] = React.useState<ThemeName>(theme);
+	const [themeName, setThemeName] = React.useState<ThemeName>(
+		getActiveTheme(),
+	);
 	const themeInstance = getTheme(themeName);
+	useWindowEvent("message", (event) => {
+		if (event?.data !== "updateTheme") return;
+		// Update the current theme when told to
+		console.log(`updateTheme: ${getActiveTheme()}`);
+		setThemeName(getActiveTheme());
+	});
 
 	// Manage globals
 	const adminConfigMatch =
@@ -119,6 +119,17 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 		10,
 	);
 	const namespace = `${adapter}.${instance}` as const;
+
+	// Manage expert mode
+	const isExpertModeActive = React.useCallback(() => {
+		return window.sessionStorage.getItem("App.expertMode") === "true";
+	}, []);
+	const [expertMode, setExpertMode] = React.useState(isExpertModeActive());
+	useWindowEvent("message", (event) => {
+		if (event.data === "updateExpertMode") {
+			setExpertMode(isExpertModeActive());
+		}
+	});
 
 	// Simplify access to dialogs and notifications
 	const [notificationState, setNotificationState] =
@@ -186,8 +197,11 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 
 	return (
 		<GlobalsContext.Provider value={{ adapter, instance, namespace }}>
-			<ThemeSwitcherContext.Provider value={setThemeName}>
+			<IoBrokerThemeContext.Provider
+				value={{ themeName, setTheme: setThemeName }}
+			>
 				<ThemeProvider theme={themeInstance}>
+					<CssBaseline />
 					{!contentReady && <Loader />}
 					{connection && (
 						<ConnectionContext.Provider value={connection}>
@@ -207,20 +221,24 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 										hideModal,
 									}}
 								>
-									{props.children}
+									<ExpertModeContext.Provider
+										value={expertMode}
+									>
+										{props.children}
 
-									{/* TODO: Maybe memo these: */}
-									<Notification
-										{...notificationState}
-										onClose={hideNotification}
-									/>
-									<ModalDialog {...modalState} />
+										{/* TODO: Maybe memo these: */}
+										<Notification
+											{...notificationState}
+											onClose={hideNotification}
+										/>
+										<ModalDialog {...modalState} />
+									</ExpertModeContext.Provider>
 								</DialogsContext.Provider>
 							</I18nContext.Provider>
 						</ConnectionContext.Provider>
 					)}
 				</ThemeProvider>
-			</ThemeSwitcherContext.Provider>
+			</IoBrokerThemeContext.Provider>
 		</GlobalsContext.Provider>
 	);
 };

@@ -14,11 +14,12 @@ const ioBrokerColors = {
 	darkBlue: "#164477",
 };
 
-export type ThemeType = "light" | "dark" | "colored" | "blue";
+export type ThemeName = "light" | "dark" | "colored" | "blue";
+export type ThemeType = "light" | "dark";
 
 declare module "@material-ui/core/styles" {
 	interface Theme {
-		name: ThemeType;
+		name: ThemeName;
 		toolbar: {
 			height: number;
 		};
@@ -31,7 +32,7 @@ declare module "@material-ui/core/styles" {
 		};
 	}
 	interface ThemeOptions {
-		name: ThemeType;
+		name: ThemeName;
 		toolbar: {
 			height: number;
 		};
@@ -150,10 +151,36 @@ function getElevations(
 	return elevations;
 }
 
+export function getActiveTheme(): ThemeName {
+	const vendorPrefix = (window as any).vendorPrefix;
+	if (vendorPrefix && vendorPrefix !== "@@vendorPrefix@@") {
+		return vendorPrefix;
+	}
+
+	return (
+		(window.localStorage?.getItem("App.themeName") as ThemeName) ??
+		(window.matchMedia("(prefers-color-scheme: dark)").matches
+			? "dark"
+			: "colored")
+	);
+}
+
+export function setActiveTheme(theme: ThemeName): void {
+	const vendorPrefix = (window as any).vendorPrefix;
+	if (vendorPrefix && vendorPrefix !== "@@vendorPrefix@@") {
+		return; // ignore
+	}
+	window.localStorage.setItem("App.themeName", theme);
+	window.localStorage.setItem(
+		"App.theme",
+		theme === "dark" || theme === "blue" ? "dark" : "light",
+	);
+}
+
 /**
  * The theme creation factory function.
  */
-const getTheme = (type: ThemeType): Theme => {
+const getTheme = (type: ThemeName): Theme => {
 	let theme: ThemeOptions;
 	if (type === "dark") {
 		// @ts-expect-error This is fine!
