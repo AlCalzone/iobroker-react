@@ -161,9 +161,6 @@ const SettingsAppContent: React.FC<
 						<div className={classes.main}>{props.children}</div>
 						<div className={classes.buttons}>
 							<SaveCloseButtons
-								// isIFrame={true}
-								noTextOnButtons={false}
-								// noTextOnButtons={this.state.width === 'xs' || this.state.width === 'sm' || this.state.width === 'md'}
 								changed={changed}
 								hasErrors={hasErrors}
 								onSave={onSave}

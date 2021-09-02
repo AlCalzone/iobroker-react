@@ -113,8 +113,8 @@ export class I18n {
 
 	/**
 	 * Translate the given string to the selected language.
-	 * @param {string} word The (key) word to look up the string.
-	 * @param {string[]} args Optional arguments which will replace the first (second, third, ...) occurence of %s
+	 * @param word The (key) word to look up the string.
+	 * @param args Optional arguments which will replace the first (second, third, ...) occurence of %s
 	 */
 	public translate(word: string, ...args: string[]): string {
 		const translation = this.translations[this._language];

@@ -115,7 +115,6 @@ export const Notification: React.FC<NotificationProps> = (props) => {
 						<CloseIcon className={classes.icon} />
 					</IconButton>,
 				]}
-				// {...other}
 			/>
 		</Snackbar>
 	);
