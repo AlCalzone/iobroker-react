@@ -42,7 +42,7 @@
     "docs": "docsify serve docs"
   },
   "dependencies": {
-    "@iobroker/socket-client": "github:AlCalzone/socket-client#clean-up"
+    "@iobroker/socket-client": "1.0.5"
   },
   "devDependencies": {
     "@iobroker/adapter-react": "^2.0.9",
