@@ -85,7 +85,9 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 				console.error(err);
 			},
 		});
-	}, [name, translations]);
+		// We MUST not set any dependencies here, or we'll end up with 3 competing connections
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	// Manage themes
 	const [themeName, setThemeName] = React.useState<ThemeName>(
