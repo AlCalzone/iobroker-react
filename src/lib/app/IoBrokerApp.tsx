@@ -104,7 +104,7 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 	// Manage globals
 	const adminConfigMatch =
 		/config\/system\.adapter\.(?<adapter>[^\.]+)\.(?<instance>\d+)/i.exec(
-			window.location.hash,
+			window.parent.location.hash,
 		); // tab-instances/config/system.adapter.zwave2.0
 	const tabRegexMatch = /adapter\/(?<adapter>[^\/]+)/i.exec(
 		window.location.pathname,
