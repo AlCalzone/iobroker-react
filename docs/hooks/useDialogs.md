@@ -29,6 +29,15 @@ interface IDialogsContext {
 			showNoButton: boolean;
 			/** Whether the "no" button should be visible */
 			showYesButton: boolean;
+			/** Specify CSS class names for each component of the dialog. This is meant to be used with `makeStyles/useStyles`. */
+			classNames?: Partial<{
+				dialog: string;
+				dialogTitle: string;
+				dialogContent: string;
+				dialogActions: string;
+				yesButton: string;
+				noButton: string;
+			}>;
 		}>,
 	) => Promise<boolean>;
 	/** Hide a currently open modal dialog */

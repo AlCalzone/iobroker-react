@@ -182,6 +182,7 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 				yesButtonText: options?.yesButtonText ?? "Ja",
 				showNoButton: options?.showNoButton ?? true,
 				noButtonText: options?.noButtonText ?? "Nein",
+				classNames: options?.classNames,
 
 				yesButtonClick: () => {
 					hideModal();
