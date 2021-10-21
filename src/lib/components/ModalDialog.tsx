@@ -26,6 +26,15 @@ export interface ModalDialogProps {
 	 * If this callback returns `false`, the dialog will not close.
 	 */
 	onClose: () => boolean | void;
+
+	classNames?: Partial<{
+		dialog: string;
+		dialogTitle: string;
+		dialogContent: string;
+		dialogActions: string;
+		yesButton: string;
+		noButton: string;
+	}>;
 }
 
 export type ModalState = {
@@ -42,6 +51,7 @@ export type ShowModal = (
 		noButtonEnabled: boolean;
 		showNoButton: boolean;
 		showYesButton: boolean;
+		classNames?: ModalDialogProps["classNames"];
 	}>,
 ) => Promise<boolean>;
 
@@ -65,9 +75,15 @@ export const ModalDialog: React.FC<ModalDialogProps> = (props) => {
 			aria-labelledby="alert-dialog-title"
 			aria-describedby="alert-dialog-description"
 			maxWidth={false}
+			className={props.classNames?.dialog}
 		>
-			<DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
-			<DialogContent>
+			<DialogTitle
+				id="alert-dialog-title"
+				className={props.classNames?.dialogTitle}
+			>
+				{props.title}
+			</DialogTitle>
+			<DialogContent className={props.classNames?.dialogContent}>
 				{typeof props.message === "string" ? (
 					<DialogContentText
 						id="alert-dialog-description"
@@ -80,7 +96,7 @@ export const ModalDialog: React.FC<ModalDialogProps> = (props) => {
 				)}
 			</DialogContent>
 			{(props.showYesButton || props.showNoButton) && (
-				<DialogActions>
+				<DialogActions className={props.classNames?.dialogActions}>
 					{props.showYesButton && (
 						<Button
 							onClick={() => {
@@ -89,6 +105,7 @@ export const ModalDialog: React.FC<ModalDialogProps> = (props) => {
 							color="primary"
 							autoFocus
 							disabled={props.yesButtonEnabled === false}
+							className={props.classNames?.yesButton}
 						>
 							{props.yesButtonText}
 						</Button>
@@ -100,6 +117,7 @@ export const ModalDialog: React.FC<ModalDialogProps> = (props) => {
 							}}
 							color="primary"
 							disabled={props.noButtonEnabled === false}
+							className={props.classNames?.noButton}
 						>
 							{props.noButtonText}
 						</Button>
