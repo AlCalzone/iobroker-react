@@ -42,7 +42,7 @@
     "docs": "docsify serve docs"
   },
   "dependencies": {
-    "@iobroker/socket-client": "1.0.5"
+    "@iobroker/socket-client": "1.0.8"
   },
   "devDependencies": {
     "@iobroker/adapter-react": "2.0.9",
