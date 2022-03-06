@@ -39,35 +39,38 @@
     "watch": "npm run build -- --watch",
     "prepare": "npm run build",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docs": "docsify serve docs"
+    "docs": "docsify serve docs",
+    "debug": "esbuild --serve=localhost:8088 --servedir=www www/index.tsx --bundle --splitting --format=esm"
   },
   "dependencies": {
-    "@iobroker/socket-client": "1.0.8"
+    "@iobroker/socket-client": "1.0.10"
   },
   "devDependencies": {
-    "@iobroker/adapter-react": "2.0.9",
+    "@iobroker/adapter-react": "2.0.21",
     "@material-ui/core": "^4.12.3",
     "@tsconfig/recommended": "^1.0.1",
-    "@types/iobroker": "^3.3.4",
-    "@types/react": "^17.0.18",
-    "@typescript-eslint/eslint-plugin": "^4.29.2",
-    "@typescript-eslint/parser": "^4.29.2",
-    "alcalzone-shared": "^4.0.0",
+    "@types/iobroker": "^4.0.1",
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.13",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "alcalzone-shared": "^4.0.1",
     "clsx": "^1.1.1",
-    "eslint": "^7.32.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "prettier": "^2.3.2",
-    "prettier-plugin-organize-imports": "^2.3.3",
+    "esbuild": "^0.14.25",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "prettier": "^2.5.1",
+    "prettier-plugin-organize-imports": "^2.3.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "typescript": "^4.4.2"
+    "typescript": "^4.6.2"
   },
   "peerDependencies": {
+    "@material-ui/core": "^4.12.3",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "@material-ui/core": "^4.12.3"
+    "react-dom": "^17.0.2"
   },
   "bugs": {
     "url": "https://github.com/AlCalzone/iobroker-react/issues"

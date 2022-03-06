@@ -24,6 +24,14 @@ import getTheme, { getActiveTheme, ThemeName } from "../shared/theme";
 // layout components
 export interface IoBrokerAppProps {
 	name: ConnectionProps["name"];
+
+	/** The protocol to use for the socket.io connection. Defaults to the currently used one. */
+	protocol?: ConnectionProps["protocol"];
+	/** The host name to use for the socket.io connection. Defaults to the currently used one. */
+	host?: ConnectionProps["host"];
+	/** The port to use for the socket.io connection. Defaults to the currently used one. */
+	port?: ConnectionProps["port"];
+
 	translations?: Translations;
 	/** When this prop exists, the loader will continue spinning until it is no longer `false` */
 	contentReady?: boolean;
@@ -53,7 +61,13 @@ export interface IoBrokerAppProps {
  * ```
  */
 export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
-	const { name, translations = {} } = props;
+	const {
+		name,
+		translations = {},
+		protocol = location.protocol,
+		host = location.hostname,
+		port = location.port,
+	} = props;
 
 	// Manage translations
 	const [i18nInstance, setI18nInstance] = React.useState<I18n>({} as any);
@@ -65,11 +79,35 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 		translate,
 	} = i18nInstance;
 
+	// Make sure the socket.io script gets loaded
+	React.useEffect(() => {
+		// Check if a script with the expected URL exists
+		const expectedUrl = `${protocol}//${host}:${port}/socket.io/socket.io.js`;
+		const expectedId = "$$iobrokerapp_socketio$$";
+		const existingScript =
+			document.getElementById(expectedId) ??
+			[...document.getElementsByTagName("script")].find(
+				(s) => s.src === expectedUrl,
+			);
+		if (existingScript) return;
+
+		// If not, create and load it
+		const script = document.createElement("script");
+		script.id = "$$iobrokerapp_socketio$$";
+		script.src = expectedUrl;
+		script.async = true;
+		script.defer = true;
+		document.head.appendChild(script);
+	}, [protocol, host, port]);
+
 	// Manage connection
 	const [connection, setConnection] = React.useState<Connection>();
 	React.useEffect(() => {
 		const _connection = new Connection({
 			name,
+			protocol,
+			host,
+			port,
 			onReady: () => {
 				// Setup translations first
 				const i18n = new I18n(
