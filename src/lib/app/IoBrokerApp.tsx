@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import I18nRA from "@iobroker/adapter-react/i18n";
 import { Connection, ConnectionProps } from "@iobroker/socket-client";
 import { ThemeProvider } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -115,6 +116,10 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 				);
 				i18n.setLanguage(_connection.systemLang);
 				setI18nInstance(i18n);
+
+				// Also set up the ones in @iobroker/adapter-react to be used in imported components
+				I18nRA.setTranslations(defaultTranslations);
+				I18nRA.setLanguage(_connection.systemLang);
 
 				// because this will cause all child components to be rendered
 				setConnection(_connection);

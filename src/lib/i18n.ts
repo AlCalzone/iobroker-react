@@ -5,17 +5,17 @@
  *
  ***/
 
+import de from "@iobroker/adapter-react/i18n/de.json";
+import en from "@iobroker/adapter-react/i18n/en.json";
+import es from "@iobroker/adapter-react/i18n/es.json";
+import fr from "@iobroker/adapter-react/i18n/fr.json";
+import it from "@iobroker/adapter-react/i18n/it.json";
+import nl from "@iobroker/adapter-react/i18n/nl.json";
+import pl from "@iobroker/adapter-react/i18n/pl.json";
+import pt from "@iobroker/adapter-react/i18n/pt.json";
+import ru from "@iobroker/adapter-react/i18n/ru.json";
+import zhCn from "@iobroker/adapter-react/i18n/zh-cn.json";
 import React from "react";
-import de from "./de.json";
-import en from "./en.json";
-import es from "./es.json";
-import fr from "./fr.json";
-import it from "./it.json";
-import nl from "./nl.json";
-import pl from "./pl.json";
-import pt from "./pt.json";
-import ru from "./ru.json";
-import zhCn from "./zh-cn.json";
 
 export type TranslationDict = Record<string, string>;
 export type Translations = { [lang in ioBroker.Languages]?: TranslationDict };
@@ -99,7 +99,7 @@ export class I18n {
 					}
 				}
 			}
-		} catch (e) {
+		} catch (e: any) {
 			console.error(`Cannot extend translation dictionary: ${e}`);
 		}
 	}

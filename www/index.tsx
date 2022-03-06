@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import ComplexCron from "../src/adapter-react/Components/ComplexCron";
 import { IoBrokerApp } from "../src/index";
 
 const Root: React.FC = React.memo(() => {
@@ -8,7 +9,8 @@ const Root: React.FC = React.memo(() => {
 	return (
 		<>
 			<h1>Test page for development</h1>
-			Hello World!
+
+			<ComplexCron language="de" />
 		</>
 	);
 });
