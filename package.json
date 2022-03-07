@@ -43,10 +43,10 @@
     "debug": "esbuild --serve=localhost:8088 --servedir=www www/index.tsx --bundle --splitting --format=esm"
   },
   "dependencies": {
+    "@iobroker/adapter-react": "file:src/adapter-react/iobroker-adapter-react-2.0.21.tgz",
     "@iobroker/socket-client": "1.0.10"
   },
   "devDependencies": {
-    "@iobroker/adapter-react": "file:../adapter-react/dist",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@tsconfig/recommended": "^1.0.1",
@@ -70,8 +70,7 @@
   },
   "peerDependencies": {
     "@material-ui/core": "^4.12.3",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^17.0.2"
   },
   "bugs": {
     "url": "https://github.com/AlCalzone/iobroker-react/issues"
