@@ -1,12 +1,12 @@
 # `useDialogs` hook
 
-The `useDialogs` hook can be used to display simple [modal dialogs](https://material-ui.com/components/dialogs/) as well as [snackbar notifications](https://material-ui.com/components/snackbars/).
+The `useDialogs` hook can be used to display ioBroker-specific dialogs, simple [modal dialogs](https://material-ui.com/components/dialogs/) as well as [snackbar notifications](https://material-ui.com/components/snackbars/).
 
 ```ts
 import { useDialogs } from "iobroker-react/hooks";
 ```
 
-It returns an object with the following three methods:
+It returns an object with the following methods:
 
 ```ts
 interface IDialogsContext {
