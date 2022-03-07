@@ -64,7 +64,6 @@ export const ModalDialog: React.FC<ModalDialogProps> = (props) => {
 
 	const handleClose = React.useCallback(() => {
 		// Ask the application whether the dialog should close
-		console.log("handleClose");
 		if (props.onClose() !== false) setOpen(false);
 	}, [props]);
 

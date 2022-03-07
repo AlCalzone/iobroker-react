@@ -13,6 +13,11 @@ import type {
 	ShowNotification,
 } from "../components/Notification";
 import { Notification } from "../components/Notification";
+import {
+	SelectIdDialog,
+	SelectIdDialogState,
+	ShowSelectId,
+} from "../components/SelectIdDialog";
 import { ConnectionContext } from "../hooks/useConnection";
 import { DialogsContext } from "../hooks/useDialogs";
 import { ExpertModeContext } from "../hooks/useExpertMode";
@@ -62,12 +67,22 @@ export interface IoBrokerAppProps {
  * ```
  */
 export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
+	// When hosted in a web adapter
+	let socketUrl: URL | undefined;
+	if ((window as any).socketUrl) {
+		try {
+			socketUrl = new URL((window as any).socketUrl);
+		} catch {
+			// ignore
+		}
+	}
+
 	const {
 		name,
 		translations = {},
-		protocol = location.protocol,
-		host = location.hostname,
-		port = location.port,
+		protocol = socketUrl?.protocol ?? location.protocol,
+		host = socketUrl?.hostname ?? location.hostname,
+		port = socketUrl?.port ?? location.port,
 	} = props;
 
 	// Manage translations
@@ -140,7 +155,6 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 	useWindowEvent("message", (event) => {
 		if (event?.data !== "updateTheme") return;
 		// Update the current theme when told to
-		console.log(`updateTheme: ${getActiveTheme()}`);
 		setThemeName(getActiveTheme());
 	});
 
@@ -183,6 +197,18 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 			message: "",
 			variant: "info",
 		});
+	const showNotification: ShowNotification = (message, variant, timeout) => {
+		setNotificationState({
+			isOpen: true,
+			message,
+			variant,
+			timeout,
+		});
+	};
+	const hideNotification = () => {
+		setNotificationState({ ...notificationState, isOpen: false });
+	};
+
 	const [modalState, setModalState] = React.useState<ModalState>({
 		isOpen: false,
 		title: "",
@@ -195,18 +221,6 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 		yesButtonClick: () => {},
 		noButtonClick: () => {},
 	});
-
-	const showNotification: ShowNotification = (message, variant, timeout) => {
-		setNotificationState({
-			isOpen: true,
-			message,
-			variant,
-			timeout,
-		});
-	};
-	const hideNotification = () => {
-		setNotificationState({ ...notificationState, isOpen: false });
-	};
 
 	const hideModal = () => {
 		setModalState((modalState) => ({ ...modalState, isOpen: false }));
@@ -239,6 +253,37 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 		});
 	};
 
+	const [selectIdDialogState, setSelectIdDialogState] =
+		React.useState<SelectIdDialogState>({
+			isOpen: false,
+			okButtonClick: () => {},
+			cancelButtonClick: () => {},
+		});
+
+	const hideSelectIdDialog = () => {
+		setSelectIdDialogState((selectIdDialogState) => ({
+			...selectIdDialogState,
+			isOpen: false,
+		}));
+	};
+	const showSelectId: ShowSelectId = ((options) => {
+		return new Promise((resolve) => {
+			setSelectIdDialogState({
+				isOpen: true,
+				...options,
+
+				okButtonClick: (selected) => {
+					hideSelectIdDialog();
+					resolve(selected as string);
+				},
+				cancelButtonClick: () => {
+					hideSelectIdDialog();
+					resolve(undefined);
+				},
+			});
+		});
+	}) as ShowSelectId;
+
 	const contentReady = !!connection && props.contentReady !== false;
 
 	return (
@@ -265,6 +310,7 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 										showNotification,
 										showModal,
 										hideModal,
+										showSelectId,
 									}}
 								>
 									<ExpertModeContext.Provider
@@ -278,6 +324,9 @@ export const IoBrokerApp: React.FC<IoBrokerAppProps> = (props) => {
 											onClose={hideNotification}
 										/>
 										<ModalDialog {...modalState} />
+										<SelectIdDialog
+											{...selectIdDialogState}
+										/>
 									</ExpertModeContext.Provider>
 								</DialogsContext.Provider>
 							</I18nContext.Provider>

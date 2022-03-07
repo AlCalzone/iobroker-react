@@ -120,11 +120,10 @@ export function useIoBrokerState<
 
 	React.useEffect(() => {
 		// Load value initially
+		loadInitial();
 		if (subscribe) {
 			// After subscription, the value will be updated automatically
 			connection.subscribeState(id, onStateChange);
-		} else {
-			loadInitial();
 		}
 
 		// componentWillUnmount

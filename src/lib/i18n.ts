@@ -1,10 +1,3 @@
-/***
- * Copyright 2018-2019 bluefox <dogafox@gmail.com>
- *
- * MIT License
- *
- ***/
-
 import de from "@iobroker/adapter-react/i18n/de.json";
 import en from "@iobroker/adapter-react/i18n/en.json";
 import es from "@iobroker/adapter-react/i18n/es.json";

@@ -51,10 +51,46 @@ interface IDialogsContext {
 		/** How long the notification should be visible in milliseconds */
 		timeout?: number,
 	) => void;
+
+	showSelectId: (options: {
+		isOpen?: boolean;
+
+		title?: string;
+		/** Set to true to allow the selection of multiple IDs. Default: false */
+		multiSelect?: boolean;
+		/** Show folders before any leaves. */
+		foldersFirst?: boolean;
+		/** Show the expert button? */
+		showExpertButton?: boolean;
+
+		/** Which columns to display. Default: `['name', 'type', 'role', 'room', 'func', 'val']` */
+		columns?: ObjectBrowserColumn[];
+		/** Which object types to show. Default: `['state']` */
+		objectTypes?: ObjectBrowserType[];
+		/** Custom filter for the object browser */
+		customFilter?: ObjectBrowserCustomFilter;
+
+		/** Which ID(s) to preselect when opening the dialog */
+		selected?: string | string[];
+
+		okButtonText?: string;
+		cancelButtonText?: string;
+
+		classNames?: Partial<{
+			headerID: string;
+			dialog: string;
+			content: string;
+		}>;
+	}) => Promise<string | string[] | undefined>
 }
 ```
 
 The `Promise` returned by `showModal` is resolved with `true` if the user clicked the "yes" button and with `false` if the user clicked the "no" button. If the user clicked on the modal background, the promise is also resolved with `false`. For more control over this behavior, use Material UI's `Dialog` component directly.
+
+The `Promise` returned by `showSelectId` resolves to either:
+- a `string` if `multiSelect` is `false` and user selected an ID
+- an array of `string`s if `multiSelect` is `true` and user selected one ore more IDs
+- `undefined` if the user clicked on the "cancel" button
 
 ## Example 1: Show a modal dialog on button click
 
@@ -121,5 +157,44 @@ const MyComponent: React.FC = () => {
 	}, [showNotification]);
 
 	return <Button onClick={trySomething}>Click me!</Button>;
+};
+```
+
+## Example 4: Let the user select an ID and show the selected ID and its state
+
+```tsx
+import Button from "@material-ui/core/Button";
+import React from "react";
+import { useDialogs, useIoBrokerState } from "iobroker-react/hooks";
+
+const MyComponent: React.FC = () => {
+	const { showSelectId } = useDialogs();
+
+	const [stateId, setStateId] = React.useState<string>();
+	const [state] = useIoBrokerState({
+		id: stateId ?? "_none",
+	});
+
+	// This will be called when the button is clicked and ask the user if they want to do this
+	const askUser = React.useCallback(async () => {
+		const selected = await showSelectId({
+			title: "Select an ID",
+		});
+		setStateId(selected);
+	}, [showSelectId]);
+
+	return (
+		<>
+			<p>
+				<Button color="primary" variant="contained" onClick={askUser}>
+					Select an ID
+				</Button>
+			</p>
+			<br />
+			Selected ID: {stateId ?? "none"}
+			<br />
+			Value: {state ?? "undefined"}
+		</>
+	);
 };
 ```
