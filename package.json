@@ -1,6 +1,6 @@
 {
   "name": "iobroker-react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An alternative approach to https://github.com/ioBroker/adapter-react/",
   "author": {
     "name": "AlCalzone",
