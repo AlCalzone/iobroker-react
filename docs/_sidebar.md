@@ -1,6 +1,7 @@
 -   Getting started
 
     -   [Introduction](README.md)
+    -   [Setup](getting-started/setup.md)
 
 -   Components
 
