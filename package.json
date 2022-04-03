@@ -43,8 +43,8 @@
     "debug": "esbuild --serve=localhost:8088 --servedir=www www/index.tsx --bundle --splitting --format=esm"
   },
   "dependencies": {
-    "@iobroker/adapter-react": "file:src/adapter-react/iobroker-adapter-react-2.0.21.tgz",
-    "@iobroker/socket-client": "1.0.10"
+    "@iobroker/adapter-react": "2.0.22",
+    "@iobroker/socket-client": "1.0.11"
   },
   "devDependencies": {
     "@material-ui/core": "^4.12.3",

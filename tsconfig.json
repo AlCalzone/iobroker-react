@@ -14,7 +14,10 @@
 		"importsNotUsedAsValues": "error",
 		// Required for TS debugging
 		"sourceMap": true,
-		"inlineSourceMap": false
+		"inlineSourceMap": false,
+		// Do not transpile so bundlers have an easier job
+		"moduleResolution": "node",
+		"module": "ES2020"
 	},
 	"include": [
 		"src/**/*.ts",
