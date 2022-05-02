@@ -85,7 +85,7 @@ const SettingsAppContent: React.FC<
 
 	// Parse and decrypt settings when instance object is loaded or changed
 	const { namespace } = useGlobals();
-	const [instanceObj, extendInstanceObj] = useIoBrokerObject(
+	const [instanceObj, , setInstanceObj] = useIoBrokerObject(
 		`system.adapter.${namespace}`,
 	);
 	const [originalSettings, setOriginalSettings] =
@@ -134,8 +134,20 @@ const SettingsAppContent: React.FC<
 			return;
 		}
 
+		// Ensure we're not trying to save an unloaded instance object
+		if (!instanceObj) {
+			console.error(
+				`Cannot save configuration: instance object is undefined}`,
+			);
+			return;
+		}
+
 		try {
-			await extendInstanceObj({ native: newNative });
+			const newInstanceObj = {
+				...instanceObj,
+				native: newNative,
+			};
+			await setInstanceObj(newInstanceObj);
 			// Updating the settings worked
 			setSettings(newNative);
 			setOriginalSettings(newNative);

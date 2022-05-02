@@ -12,6 +12,12 @@ type BoundExtendObject<T extends string = string> = (
 	},
 ) => Promise<void>;
 
+type BoundSetObject<T extends string = string> = (
+	obj: ioBroker.SettableObject & {
+		type?: ioBroker.ObjectIdToObjectType<T>["type"];
+	},
+) => Promise<void>;
+
 /**
  * Hook to read/subscribe to an object within ioBroker or update it using extendObject.
  * @param objectId The object id to access
@@ -43,6 +49,7 @@ export function useIoBrokerObject<T extends string>(
 ): readonly [
 	object: ioBroker.ObjectIdToObjectType<T> | undefined,
 	extendObject: BoundExtendObject<T>,
+	setObject: BoundSetObject<T>,
 ] {
 	const { subscribe = true } = options;
 
@@ -75,8 +82,13 @@ export function useIoBrokerObject<T extends string>(
 		return connection.extendObject(objectId, obj);
 	};
 
-	return [object, extendObject] as readonly [
+	const _setObject: BoundSetObject<T> = (obj) => {
+		return connection.setObject(objectId, obj);
+	};
+
+	return [object, extendObject, _setObject] as readonly [
 		ioBroker.ObjectIdToObjectType<T> | undefined,
 		BoundExtendObject<T>,
+		BoundSetObject<T>,
 	];
 }

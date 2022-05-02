@@ -15,8 +15,10 @@ function useIoBrokerObject(
 ): readonly [
 	/** The object that belongs to the ID. The return type will be inferred from the object ID, for example `system.adapter.my-adapter.0` will be an InstanceObject */
 	object: ioBroker.ObjectIdToObjectType<T> | undefined,
-	/** A function to update the object. Like `extendObject`, but does not take an ID. */
+	/** A function to update the object using deep merge. Like `extendObject`, but does not take an ID. */
 	extendObject: BoundExtendObject<T>,
+	/** A function to overwrite the object. Like `setObject`, but does not take an ID. */
+	setObject: BoundSetObject<T>,
 ]
 
 interface UseIoBrokerObjectOptions {
