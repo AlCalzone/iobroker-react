@@ -1,1 +1,1 @@
-export { default } from "@iobroker/adapter-react/Components/Image";
+export { default } from "@iobroker/adapter-react-v5/Components/Image";

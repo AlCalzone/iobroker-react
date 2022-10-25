@@ -1,1 +1,1 @@
-export { default } from "@iobroker/adapter-react/Dialogs/Message";
+export { default } from "@iobroker/adapter-react-v5/Dialogs/Message";

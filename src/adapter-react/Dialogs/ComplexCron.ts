@@ -1,1 +1,1 @@
-export { default } from "@iobroker/adapter-react/Dialogs/ComplexCron";
+export { default } from "@iobroker/adapter-react-v5/Dialogs/ComplexCron";

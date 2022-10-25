@@ -1,1 +1,1 @@
-export { default } from "@iobroker/adapter-react/Components/TabContainer";
+export { default } from "@iobroker/adapter-react-v5/Components/TabContainer";

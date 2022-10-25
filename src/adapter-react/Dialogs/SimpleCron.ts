@@ -1,1 +1,1 @@
-export { default } from "@iobroker/adapter-react/Dialogs/SimpleCron";
+export { default } from "@iobroker/adapter-react-v5/Dialogs/SimpleCron";
