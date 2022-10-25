@@ -9,6 +9,7 @@ export interface DropdownOption {
 }
 
 export type DropdownProps = {
+	label: string;
 	options?: DropdownOption[];
 	selectedOption: any;
 	noOptionsMessage?: string;
@@ -17,6 +18,7 @@ export type DropdownProps = {
 
 export const Dropdown: React.FC<DropdownProps> = (props) => {
 	const {
+		label,
 		options,
 		selectedOption,
 		noOptionsMessage,
@@ -31,9 +33,10 @@ export const Dropdown: React.FC<DropdownProps> = (props) => {
 
 	return (
 		<Select
+			label={label}
 			value={value ?? ""}
+			input={<OutlinedInput label={placeholder} />}
 			displayEmpty
-			input={<OutlinedInput />}
 			margin="dense"
 			{...otherProps}
 		>
