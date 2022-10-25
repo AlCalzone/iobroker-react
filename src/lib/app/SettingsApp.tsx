@@ -1,4 +1,5 @@
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import type { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 import React from "react";
 import SaveCloseButtons from "../components/SaveCloseButtons";
 import { useGlobals } from "../hooks/useGlobals";
