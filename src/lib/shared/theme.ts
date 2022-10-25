@@ -1,13 +1,9 @@
-import orange from "@material-ui/core/colors/orange";
-import type { PaperClassKey } from "@material-ui/core/Paper";
-import {
-	createTheme,
-	StyleRules,
-	Theme,
-	ThemeOptions,
-} from "@material-ui/core/styles";
+import orange from "@mui/material/colors/orange";
+import type { PaperClassKey } from "@mui/material/Paper";
+import { createTheme, Theme, ThemeOptions } from "@mui/material/styles";
+import type { StyleRules } from "@mui/styles";
 import { padStart } from "alcalzone-shared/strings";
-
+// import type { Theme } from "@mui/material/styles";
 /** The default ioBroker colors which are used for the logo. */
 const ioBrokerColors = {
 	lightBlue: "#3399cc",
@@ -17,7 +13,7 @@ const ioBrokerColors = {
 export type ThemeName = "light" | "dark" | "colored" | "blue";
 export type ThemeType = "light" | "dark";
 
-declare module "@material-ui/core/styles" {
+declare module "@mui/material/styles" {
 	interface Theme {
 		name: ThemeName;
 		toolbar: {
@@ -46,7 +42,7 @@ declare module "@material-ui/core/styles" {
 	}
 }
 
-declare module "@material-ui/core/styles/createPalette" {
+declare module "@mui/material/styles/createPalette" {
 	interface Palette {
 		expert: Palette["primary"];
 		logo: {
@@ -138,6 +134,8 @@ function getElevation(
 function getElevations(
 	color: string,
 	overlay: string,
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	// eslint-disable-next-line @typescript-eslint/ban-types
 ): Partial<StyleRules<PaperClassKey, {}>> {
 	const elevations: Record<string, any> = {};
@@ -187,7 +185,7 @@ const getTheme = (type: ThemeName): Theme => {
 		theme = {
 			name: type,
 			palette: {
-				type: "dark",
+				mode: "dark",
 				background: {
 					paper: "#121212",
 					default: "#121212",
@@ -213,19 +211,23 @@ const getTheme = (type: ThemeName): Theme => {
 					grow: "#1d1d1d",
 				},
 			},
-			overrides: {
+			components: {
 				MuiAppBar: {
-					colorDefault: {
-						backgroundColor: "#272727",
+					styleOverrides: {
+						colorDefault: {
+							backgroundColor: "#272727",
+						},
 					},
 				},
 				MuiLink: {
-					root: {
-						textTransform: "uppercase",
-						transition: "color .3s ease",
-						color: orange[200],
-						"&:hover": {
-							color: orange[100],
+					styleOverrides: {
+						root: {
+							textTransform: "uppercase",
+							transition: "color .3s ease",
+							color: orange[200],
+							"&:hover": {
+								color: orange[100],
+							},
 						},
 					},
 				},
@@ -237,7 +239,7 @@ const getTheme = (type: ThemeName): Theme => {
 		theme = {
 			name: type,
 			palette: {
-				type: "dark",
+				mode: "dark",
 				background: {
 					paper: "#151d21",
 					default: "#151d21",
@@ -263,19 +265,23 @@ const getTheme = (type: ThemeName): Theme => {
 					grow: "#1d1d1d",
 				},
 			},
-			overrides: {
+			components: {
 				MuiAppBar: {
-					colorDefault: {
-						backgroundColor: "#2a3135",
+					styleOverrides: {
+						colorDefault: {
+							backgroundColor: "#2a3135",
+						},
 					},
 				},
 				MuiLink: {
-					root: {
-						textTransform: "uppercase",
-						transition: "color .3s ease",
-						color: orange[200],
-						"&:hover": {
-							color: orange[100],
+					styleOverrides: {
+						root: {
+							textTransform: "uppercase",
+							transition: "color .3s ease",
+							color: orange[200],
+							"&:hover": {
+								color: orange[100],
+							},
 						},
 					},
 				},
@@ -287,7 +293,7 @@ const getTheme = (type: ThemeName): Theme => {
 		theme = {
 			name: type,
 			palette: {
-				type: "light",
+				mode: "light",
 				primary: {
 					main: "#3399CC",
 				},
@@ -305,19 +311,23 @@ const getTheme = (type: ThemeName): Theme => {
 					grow: "#d0d0d0",
 				},
 			},
-			overrides: {
+			components: {
 				MuiAppBar: {
-					colorDefault: {
-						backgroundColor: "#3399CC",
+					styleOverrides: {
+						colorDefault: {
+							backgroundColor: "#3399CC",
+						},
 					},
 				},
 				MuiLink: {
-					root: {
-						textTransform: "uppercase",
-						transition: "color .3s ease",
-						color: orange[400],
-						"&:hover": {
-							color: orange[300],
+					styleOverrides: {
+						root: {
+							textTransform: "uppercase",
+							transition: "color .3s ease",
+							color: orange[400],
+							"&:hover": {
+								color: orange[300],
+							},
 						},
 					},
 				},
@@ -363,7 +373,7 @@ const getTheme = (type: ThemeName): Theme => {
 		theme = {
 			name: type as any,
 			palette: {
-				type: "light",
+				mode: "light",
 				primary: {
 					main: "#3399CC",
 				},
@@ -381,14 +391,16 @@ const getTheme = (type: ThemeName): Theme => {
 					grow: "#d0d0d0",
 				},
 			},
-			overrides: {
+			components: {
 				MuiLink: {
-					root: {
-						textTransform: "uppercase",
-						transition: "color .3s ease",
-						color: orange[400],
-						"&:hover": {
-							color: orange[300],
+					styleOverrides: {
+						root: {
+							textTransform: "uppercase",
+							transition: "color .3s ease",
+							color: orange[400],
+							"&:hover": {
+								color: orange[300],
+							},
 						},
 					},
 				},
