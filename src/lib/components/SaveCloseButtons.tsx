@@ -1,31 +1,27 @@
-import Button from "@material-ui/core/Button";
-import {
-	createStyles,
-	makeStyles,
-	Theme,
-	useTheme,
-} from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import CloseIcon from "@material-ui/icons/Close";
-import SaveIcon from "@material-ui/icons/Save";
+import CloseIcon from "@mui/icons-material/Close";
+import SaveIcon from "@mui/icons-material/Save";
+import Button from "@mui/material/Button";
+import { Theme, useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { makeStyles } from "@mui/styles";
 import React from "react";
 import { useI18n } from "../i18n";
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		root: {
-			background: theme.saveToolbar.background,
-			display: "flex",
-			flexFlow: "row nowrap",
-			justifyItems: "space-between",
-			gap: theme.spacing(1),
-			padding: theme.spacing(1, 4),
-		},
-		button: {
-			fontWeight: "bold",
-		},
-	}),
-);
+const useStyles = makeStyles((theme: Theme) => ({
+	// createStyles({
+	root: {
+		background: theme.saveToolbar.background,
+		display: "flex",
+		flexFlow: "row nowrap",
+		justifyItems: "space-between",
+		gap: theme.spacing(1),
+		padding: theme.spacing(1, 4),
+	},
+	button: {
+		fontWeight: "bold",
+	},
+	// }),
+}));
 export interface SaveCloseButtonsProps {
 	onSave: (close: boolean) => void;
 	onClose: () => void;
@@ -36,6 +32,8 @@ export interface SaveCloseButtonsProps {
 
 const SaveCloseButtons: React.FC<SaveCloseButtonsProps> = (props) => {
 	const { onSave, onClose, changed, hasErrors } = props;
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
 	const classes = useStyles();
 	const { translate } = useI18n();
 	const theme = useTheme();
