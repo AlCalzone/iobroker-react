@@ -4,8 +4,15 @@
  * MIT License
  *
  **/
-import { makeStyles } from "@material-ui/core/styles";
+import type { Theme } from "@mui/material/styles";
+import { makeStyles } from "@mui/styles";
+// import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
+
+declare module "@mui/styles/defaultTheme" {
+	// eslint-disable-next-line @typescript-eslint/no-empty-interface
+	interface DefaultTheme extends Theme {}
+}
 
 export interface LoaderProps {
 	/** The size in pixels of this loader. */
