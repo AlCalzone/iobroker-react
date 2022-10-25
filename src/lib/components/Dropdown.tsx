@@ -33,9 +33,8 @@ export const Dropdown: React.FC<DropdownProps> = (props) => {
 
 	return (
 		<Select
-			label={label}
 			value={value ?? ""}
-			input={<OutlinedInput label={placeholder} />}
+			input={<OutlinedInput />}
 			displayEmpty
 			margin="dense"
 			{...otherProps}
