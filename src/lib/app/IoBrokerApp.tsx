@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import I18nRA from "@iobroker/adapter-react/i18n";
+import I18nRA from "@iobroker/adapter-react-v5/i18n";
 import { Connection, ConnectionProps } from "@iobroker/socket-client";
-import { ThemeProvider } from "@material-ui/core";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
 import { extend } from "alcalzone-shared/objects";
 import React from "react";
 import Loader from "../components/Loader";
