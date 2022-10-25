@@ -85,7 +85,7 @@ export function useIoBrokerState<
 			// so the UI can show a response immediately
 			if (isObject(state)) {
 				if ("val" in state) setValue(state.val as T);
-				if ("ack" in state) setAck(state.ack);
+				if ("ack" in state) setAck(state.ack as boolean);
 			} else {
 				setValue(state as T);
 				setAck(false);
