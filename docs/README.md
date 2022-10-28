@@ -6,7 +6,8 @@ The official React docs [recommend using functional components to compose the UI
 
 > At Facebook, we use React in thousands of components, and we haven’t found any use cases where we would recommend creating component inheritance hierarchies.
 
-So, this library is an alternative approach to https://github.com/ioBroker/adapter-react/ using a functional style for the main [`App` components](components/index.md). In addition, it includes several [Hooks](hooks/index.md) which make writing ioBroker UIs much easier. Sorry, no Blackjack though!
+So, this library is an alternative approach to https://github.com/ioBroker/adapter-react-v5/ using a functional style for the main [`App` components](components/index.md). In 
+addition, it includes several [Hooks](hooks/index.md) which make writing ioBroker UIs much easier. Sorry, no Blackjack though!
 
 ```tsx
 import React from "react";
