@@ -1,6 +1,7 @@
 # Components <!-- {docsify-ignore-all} -->
 
-Most predefined components can be imported directly from the `@iobroker/adapter-react` package. However there are a few that are not compatible with the functional approach we use here. These are described here.
+Most predefined components can be imported directly from the `@iobroker/adapter-react-v5` package. However there are a few that are not compatible with the functional approach we 
+use here. These are described here.
 
 ## `SettingsApp`
 
@@ -19,11 +20,11 @@ A thin wrapper around Material UI's `Select` component, specifically for dropdow
 
 ## `Loader`
 
-This component displays the loading ioBroker icon. The original version from `@iobroker/adapter-react` has some problems, so this one is used as a replacement.  
+This component displays the loading ioBroker icon. The original version from `@iobroker/adapter-react-v5` has some problems, so this one is used as a replacement.  
 → [Documentation](components/Loader.md)
 
 ## `SaveCloseButtons`
 
-This component displays the Save and Close buttons of the `SettingsApp`. It is a simplified and cleaned up version of the component from `@iobroker/adapter-react`.
+This component displays the Save and Close buttons of the `SettingsApp`. It is a simplified and cleaned up version of the component from `@iobroker/adapter-react-v5`.
 You shouldn't need to use it directly.  
 → [Documentation](components/SaveCloseButtons.md)

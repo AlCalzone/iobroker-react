@@ -34,8 +34,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 // UI elements are imported from Material-UI
-import Checkbox from "@material-ui/core/Checkbox";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
 
 import { SettingsApp } from "iobroker-react/app";
 import { useSettings, useI18n } from "iobroker-react/hooks";

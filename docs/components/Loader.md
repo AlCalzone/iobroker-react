@@ -1,6 +1,6 @@
 # `Loader`
 
-This component displays the loading ioBroker icon. The original version from `@iobroker/adapter-react` has some problems, so this one is used as a replacement.
+This component displays the loading ioBroker icon. The original version from `@iobroker/adapter-react-v5` has some problems, so this one is used as a replacement.
 You shouldn't need to use it directly, as it is included in the `IoBrokerApp` component and can be displayed by controlling its `contentLoaded` prop.
 
 ```ts
