@@ -1,7 +1,7 @@
 {
   "name": "iobroker-react",
-  "version": "0.0.2",
-  "description": "An alternative approach to https://github.com/ioBroker/adapter-react/",
+  "version": "0.0.3",
+  "description": "An alternative approach to https://github.com/ioBroker/adapter-react-v5/",
   "author": {
     "name": "AlCalzone",
     "email": "d.griesel@gmx.net"
@@ -44,7 +44,7 @@
   },
   "dependencies": {
     "@iobroker/adapter-react-v5": "^3.2.2",
-    "@iobroker/socket-client": "1.0.11"
+    "@iobroker/socket-client": "1.0.12"
   },
   "devDependencies": {
     "@emotion/react": "^11.10.4",
