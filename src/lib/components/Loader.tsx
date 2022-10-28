@@ -6,7 +6,6 @@
  **/
 import type { Theme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles";
-// import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 
 declare module "@mui/styles/defaultTheme" {
