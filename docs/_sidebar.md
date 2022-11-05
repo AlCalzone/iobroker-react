@@ -12,6 +12,7 @@
     -   [Loader](components/Loader.md)
     -   [Logo](components/Logo.md)
     -   [SaveCloseButtons](components/SaveCloseButtons.md)
+    -   [TreeTable](components/TreeTable.md)
 
 -   Hooks
 

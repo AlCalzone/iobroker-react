@@ -10,3 +10,9 @@ export {
 	ModalDialogProps,
 	ModalState,
 } from "./lib/components/ModalDialog";
+export {
+	TreeColumnProps,
+	TreeDataProps,
+	TreeTable,
+	TreeTableProps,
+} from "./lib/components/TreeTable";
