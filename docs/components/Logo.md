@@ -10,7 +10,7 @@ The `Logo` component has an optional `classes` prop which controls the CSS class
 
 ```ts
 interface LogoProps {
-	/** The CSS classes of the logo. */
+	/** The CSS classes of the logo and buttons. */
 	classes?: { button?: string; logo?: string };
 }
 ```
