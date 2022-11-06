@@ -37,7 +37,7 @@ The `classes` property can be used to control the CSS classes of the logo and bu
 import React from "react";
 import { Logo } from "iobroker-react/components";
 
-const ExampleComponent: React.FC = () => {
+export const ExampleComponent: React.FC = (): JSX.Element => {
   return (
     <div>
 		<Logo classes={{ buttons: "myButtons", logo: "myLogo",}} />
