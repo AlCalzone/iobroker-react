@@ -13,6 +13,7 @@
     -   [Logo](components/Logo.md)
     -   [SaveCloseButtons](components/SaveCloseButtons.md)
     -   [TreeTable](components/TreeTable.md)
+    -   [PasswordInput](components/PasswordInput.md)
 
 -   Hooks
 

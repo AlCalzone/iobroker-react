@@ -11,6 +11,11 @@ export {
 	ModalState,
 } from "./lib/components/ModalDialog";
 export {
+	PasswordColors,
+	PasswordInput,
+	PasswordInputProps,
+} from "./lib/components/PasswordInput";
+export {
 	TreeColumnProps,
 	TreeDataProps,
 	TreeTable,
