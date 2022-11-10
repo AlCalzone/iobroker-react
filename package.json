@@ -43,7 +43,7 @@
     "debug": "esbuild --serve=localhost:8088 --servedir=www www/index.tsx --bundle --splitting --format=esm"
   },
   "dependencies": {
-    "@iobroker/adapter-react-v5": "^3.2.2",
+    "@iobroker/adapter-react-v5": "^3.2.6",
     "@iobroker/socket-client": "1.0.12"
   },
   "devDependencies": {
@@ -66,6 +66,7 @@
     "prettier-plugin-organize-imports": "^3.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-error-boundary": "^3.1.4",
     "typescript": "^4.8.4"
   },
   "peerDependencies": {
