@@ -15,6 +15,7 @@
     -   [TreeTable](components/TreeTable.md)
     -   [PasswordInput](components/PasswordInput.md)
     -   [NumberInput](components/NumberInput.md)
+    -   [IpAddressInput](components/IpAddressInput.md)
 
 -   Hooks
 

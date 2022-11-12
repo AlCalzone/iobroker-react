@@ -3,6 +3,10 @@ export {
 	DropdownOption,
 	DropdownProps,
 } from "./lib/components/Dropdown";
+export {
+	IpAddressInput,
+	IpAddressInputProps,
+} from "./lib/components/IpAddressInput";
 export { default as Loader, LoaderProps } from "./lib/components/Loader";
 export { Logo } from "./lib/components/Logo";
 export {
