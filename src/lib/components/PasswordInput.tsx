@@ -44,7 +44,7 @@ export type PasswordColors = {
 };
 
 export interface PasswordInputProps {
-	value: string;
+	value?: string;
 	onChange: (value: string) => void;
 	classNames?: Partial<{
 		formControl: string;
