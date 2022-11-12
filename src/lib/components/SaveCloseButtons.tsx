@@ -8,7 +8,6 @@ import React from "react";
 import { useI18n } from "../i18n";
 
 const useStyles = makeStyles((theme: Theme) => ({
-	// createStyles({
 	root: {
 		background: theme.saveToolbar.background,
 		display: "flex",
@@ -20,8 +19,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 	button: {
 		fontWeight: "bold",
 	},
-	// }),
 }));
+
 export interface SaveCloseButtonsProps {
 	onSave: (close: boolean) => void;
 	onClose: () => void;
@@ -32,8 +31,6 @@ export interface SaveCloseButtonsProps {
 
 const SaveCloseButtons: React.FC<SaveCloseButtonsProps> = (props) => {
 	const { onSave, onClose, changed, hasErrors } = props;
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
 	const classes = useStyles();
 	const { translate } = useI18n();
 	const theme = useTheme();
