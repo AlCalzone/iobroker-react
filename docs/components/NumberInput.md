@@ -36,6 +36,7 @@ interface NumberInputProps {
 	helperText?: string; // Helper text for the input field
 }
 ```
+**All properties of `NumberInput` that can be seen above in the `NumberInputProps` interface are optional except `onChange` which must always be specified.**
 
 The `onChange` function is called when the value of the input field changes. The `onChange` function returns the new value of the input field.\
 The `value` prop is used to set the value of the input field. If the `value` prop is not set, the input field is empty.
@@ -47,7 +48,7 @@ And with the property `step` you can set a step size for the input field.
 The `classNames` prop can be used to control the CSS classes of the input field and the show/hide button.\
 You can use the `classNames` with the `style.css` or with the `makeStyles` function of Material UI.\
 The `classNames` prop has the following properties:
-- `input` - CSS class for the input field (e.g. with `useStyles` => `input={{ classes.input }}` or with `style.css` => `input={{ className: "my-input" }}`)
+- `input` - CSS class for the input field (e.g. with `useStyles` => `classNames={{ input: classes.input}} ` or with `style.css` => `classNames={{ input: "my-input" }}`)
 - `inputProps` - CSS class for the input field props
 - `helperText` - CSS class for the helper text.
 
@@ -114,20 +115,20 @@ export const NumberInputExample: React.FC<NumberInputExampleProps>
 	return (
             <div>
 				<NumberInput
-					variant={"outlined"}  
-					label={"Number Input"}
-					value={props.native.number_input}
-					defaultValue={0}
-					onChange={handleNumberInput}
-					color={error.color}
-					error={error.error}
-					helperText={error.message}
+					variant={"outlined"} // optional (default: "outlined")
+					label={"Number Input"} // optional if not set no label will be displayed
+					value={props.native.number_input} // optional if not set the input field will be 0  
+					defaultValue={0} // optional if not set the input field will be 0
+					onChange={handleNumberInput} // required
+					color={error.color} // optional (default: "primary")
+					error={error.error} // optional (default: false)
+					helperText={error.message} // optional if not set no helper text will be displayed
 					// sx={{ width: "200px" }} // mui-v5 only
 					classNames={{ input: classes.input}} // mui-v4 or mui-v5
-					min={0}
-					max={200}
-					step={1}
-					textAlign={"center"}
+					min={0} // optional if not set also negative numbers are allowed
+					max={200} // optional werden keine Grenzen nach oben gesetzt
+					step={1} // optional (default: 1)
+					textAlign={"center"} // optional (default: "left")
 				/>
             </div>
 		);
