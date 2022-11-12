@@ -10,6 +10,7 @@ export {
 	ModalDialogProps,
 	ModalState,
 } from "./lib/components/ModalDialog";
+export { NumberInput, NumberInputProps } from "./lib/components/NumberInput";
 export {
 	PasswordColors,
 	PasswordInput,
