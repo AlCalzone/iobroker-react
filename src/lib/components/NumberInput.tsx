@@ -43,7 +43,7 @@ export const NumberInput: React.FC<NumberInputProps> = (props): JSX.Element => {
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const newValue = Number(event.target.value);
 		if (isNaN(newValue)) {
-			setValues(0);
+			setValues(props.min || 0);
 			return;
 		}
 		if (props.min !== undefined && newValue < props.min) {
