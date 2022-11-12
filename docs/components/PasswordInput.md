@@ -37,7 +37,7 @@ interface PasswordInputProps {
 	value: string;  // password value from the Native object
 	onChange: (value: string) => void;  // onChange function returns the new password value
 	classNames?: Partial<{  // CSS classes for the input field and the show/hide button
-		formControl: string;  
+		formControl: string;
 		input: string;
 		filledInput: string;
 		outlinedInput: string;
@@ -73,13 +73,13 @@ interface PasswordInputProps {
 	placeholder?: string; // placeholder for the input field
 }
 ```
-The `onChange` function is called when the value of the input field changes. The `onChange` function returns the new value of the input field.
-The `value` prop is used to set the value of the input field. If the `value` prop is not set, the input field is empty.
-The `classNames` prop can be used to control the CSS classes of the input field and the show/hide button.
-Man kan die `classNames` mit der `style.css` nutzen oder mit der `makeStyles` Funktion von Material UI.
+The `onChange` function is called when the value of the input field changes. The `onChange` function returns the new value of the input field.\
+The `value` prop is used to set the value of the input field. If the `value` prop is not set, the input field is empty.\
+The `classNames` prop can be used to control the CSS classes of the input field and the show/hide button.\
+You can use the `classNames` with the `style.css` or with the `makeStyles` function of Material UI.\
 The `classNames` prop has the following properties:
+- `input`: CSS class for the Input component (e.g. with `useStyles` => `input={{ classes.input }}` or with `style.css` => `input={{ className: "my-input" }}`)
 - `formControl`: CSS class for the FormControl component
-- `input`: CSS class for the Input component
 - `filledInput`: CSS class for the FilledInput component
 - `outlinedInput`: CSS class for the OutlinedInput component
 - `inputLabel`: CSS class for the InputLabel component
@@ -90,7 +90,7 @@ The `classNames` prop has the following properties:
 - `helperText`: CSS class for the helper text
 
 The `sx` prop can be used to control the style of the input field and the show/hide button only for mui-v5. The sx prop has the following properties:
-  - same as classNames
+  - same as `classNames`
 
 
 ## Example
@@ -119,7 +119,7 @@ export const PasswordInputExample: React.FC<PasswordInputExampleProps>
 		error: boolean;
 		color: PasswordColors["color"];
 	}>({
-		message: "",
+		message: "enter your password",
 		error: false,
 		color: "primary",
 	});
@@ -145,7 +145,7 @@ export const PasswordInputExample: React.FC<PasswordInputExampleProps>
 		} else {
             setError({
 				...error,
-				message: "success",
+				message: "Password is valid",
 				error: false,
 				color: "success",
 			});
@@ -158,7 +158,7 @@ export const PasswordInputExample: React.FC<PasswordInputExampleProps>
 			variant={"standard"} 
 			required={true} 
 			placeholder={"Enter your password"} 
-			classNames={{ formControl: classes.formControl }}
+			classNames={{ formControl: classes.formControl }} // mui-v4 or mui-v5
 			// sx={{
 			// 	formControl: {
 			// 		width: "200px",  // mui-v5 only
