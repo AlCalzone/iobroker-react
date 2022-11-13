@@ -34,6 +34,7 @@ interface NumberInputProps {
 	disabled?: boolean; // Is the input field disabled?
 	error?: boolean; // Is the input field in error state?
 	helperText?: string; // Helper text for the input field
+	unit?: string; // Unit of the input field
 }
 ```
 **All properties of `NumberInput` that can be seen above in the `NumberInputProps` interface are optional except `onChange` which must always be specified.**
@@ -129,6 +130,7 @@ export const NumberInputExample: React.FC<NumberInputExampleProps>
 					max={200} // optional werden keine Grenzen nach oben gesetzt
 					step={1} // optional (default: 1)
 					textAlign={"center"} // optional (default: "left")
+					unit={"°C"} // optional if not set no unit will be displayed
 				/>
             </div>
 		);

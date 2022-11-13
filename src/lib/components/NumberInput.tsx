@@ -1,3 +1,4 @@
+import InputAdornment from "@mui/material/InputAdornment";
 import type { Theme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
 import type { SxProps } from "@mui/system";
@@ -31,6 +32,7 @@ export interface NumberInputProps {
 	disabled?: boolean; // Is the input field disabled?
 	error?: boolean; // Is the input field in error state?
 	helperText?: string; // Helper text for the input field
+	unit?: string; // Unit for the input field
 }
 
 export const NumberInput: React.FC<NumberInputProps> = (props): JSX.Element => {
@@ -82,6 +84,11 @@ export const NumberInput: React.FC<NumberInputProps> = (props): JSX.Element => {
 						},
 					},
 					sx: props.sx?.inputProps,
+					endAdornment: (
+						<InputAdornment position={"end"}>
+							{props.unit || ""}
+						</InputAdornment>
+					),
 				}}
 				sx={props.sx?.input}
 				helperText={props.helperText}
