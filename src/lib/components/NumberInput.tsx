@@ -8,7 +8,7 @@ import React from "react";
 
 export interface NumberInputProps {
 	label?: string; // Label for the input field
-	value?: number; // Value of the input field
+	value: number; // Value of the input field
 	defaultValue?: number; // Default value of the input field
 	onChange: (value: number) => void; // Callback when the value changes
 	required?: boolean; // Is the input field required?
@@ -39,26 +39,18 @@ export interface NumberInputProps {
 }
 
 export const NumberInput: React.FC<NumberInputProps> = (props): JSX.Element => {
-	// State for the value of the input field
-	const [values, setValues] = React.useState<number>(
-		props.value || props.defaultValue || 0,
-	);
-
 	// Handle change of the input field
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const newValue = Number(event.target.value);
 		if (isNaN(newValue)) {
-			setValues(props.min || 0);
+			props.onChange(props.min || 0);
 			return;
 		}
 		if (props.min !== undefined && newValue < props.min) {
-			setValues(props.min);
 			props.onChange?.(props.min);
 		} else if (props.max !== undefined && newValue > props.max) {
-			setValues(props.max);
 			props.onChange?.(props.max);
 		} else {
-			setValues(newValue);
 			props.onChange?.(newValue);
 		}
 	};
@@ -70,7 +62,7 @@ export const NumberInput: React.FC<NumberInputProps> = (props): JSX.Element => {
 					variant={props.variant || "outlined"}
 					type={"number"}
 					label={props.label}
-					value={values}
+					value={props.value || props.defaultValue || 0}
 					fullWidth
 					color={props.color || "primary"}
 					error={props.error || false}

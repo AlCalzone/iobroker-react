@@ -7,7 +7,7 @@ import React from "react";
 
 export interface IpAddressInputProps {
 	label?: string; // Label for the input field
-	value?: string; // Value of the input field
+	value: string; // Value of the input field
 	defaultValue?: string; // Default value of the input field
 	onChange: (value: string, valid?: boolean) => void; // Callback when the value changes
 	required?: boolean; // Is the input field required?
@@ -45,10 +45,6 @@ const ipRegex = /^(?:(?:25[0-5]|2[0-4]\d|1?\d?\d)(?:\.(?!$)|$)){4}$/; //regex fr
 export const IpAddressInput: React.FC<IpAddressInputProps> = (
 	props,
 ): JSX.Element => {
-	// State for the value of the input field
-	const [ipAddress, setIpAddress] = React.useState<string>(
-		props.value || props.defaultValue || "",
-	);
 	const [values, setValues] = React.useState<{
 		error?: boolean;
 		helperText?: string;
@@ -72,7 +68,7 @@ export const IpAddressInput: React.FC<IpAddressInputProps> = (
 			if (
 				length !== index &&
 				noOfDots < 3 &&
-				ipAddress.length < length &&
+				props.value.length < length &&
 				(length - index) % 3 == 0
 			) {
 				updatedVal = `${newValue}.`;
@@ -81,8 +77,6 @@ export const IpAddressInput: React.FC<IpAddressInputProps> = (
 			} else {
 				updatedVal = newValue;
 			}
-
-			setIpAddress(updatedVal);
 
 			if (props.error) {
 				if (updatedVal !== undefined || updatedVal !== "") {
@@ -119,7 +113,7 @@ export const IpAddressInput: React.FC<IpAddressInputProps> = (
 					variant={props.variant || "outlined"}
 					type={"text"}
 					label={props.label}
-					value={ipAddress}
+					value={props.value || props.defaultValue || ""}
 					color={values.color || "primary"}
 					error={values.error || false}
 					FormHelperTextProps={{

@@ -13,7 +13,7 @@ import { IpAddressInput } from "iobroker-react/components";
 ```tsx
 interface IpAddressInputProps {
 	label?: string; // Label for the input field
-	value?: string; // Value of the input field
+	value: string; // Value of the input field
 	defaultValue?: string; // Default value of the input field
 	onChange: (value: string, valid?: boolean) => void; // Callback when the value changes (valid is true if the value is a valid IP address)
 	required?: boolean; // Is the input field required?
@@ -46,14 +46,14 @@ interface IpAddressInputProps {
 }
 ```
 
-**All properties of `IpAddressInput` that can be seen above in the `IpAddressInputProps` interface are optional except `onChange` which must always be specified.**
+**All properties of `IpAddressInput` that can be seen above in the `IpAddressInputProps` interface are optional except `onChange` and `value` which must always be specified.**
 
 The `onChange` function is called when the value of the input field changes. The `onChange` function returns the new value and a boolean value indicating which indicates\
 whether the value is a valid IP address if the function has been defined via the `error` property and enabled with `true`; otherwise the `onChange` function returns only the
 new value.\
 The `valid` parameter in `onChange` can then be used for further validation.
 
-The `value` prop is used to set the value of the input field from native (e.g. `value={native.ipAddress}`). If the `value` prop is not set, the input field is empty.
+The `value` prop is used to set the value of the input field from native (e.g. `value={native.ipAddress}`).
 
 The `classNames` prop can be used to control the CSS classes of the input field and the show/hide button.\
 You can use the `classNames` with the `style.css` or with the `makeStyles` function of Material UI.\
@@ -98,15 +98,19 @@ export const IpAddressInputExample: React.FC<IpAddressInputExampleProps>
 = (props): JSX.Element => {
 	const { translate: _ } = useI18n(); // translate function
 	const classes = useStyles(); // CSS classes
+	const [value, setValue] = React.useState<string>(props.native.ipAddress || '');
   
   const handleChange = (value: string, valid?: boolean) => {
     // if you work with validation you can do the validation here and then call the onChange function
     if (valid) {
+        setValue(value);
 	    props.onChange("ipAddress", value);
 	}
     
     // without validation
+	  setValue(value);
 	  props.onChange("ipAddress", value);
+    
     
   };
   
@@ -116,7 +120,7 @@ export const IpAddressInputExample: React.FC<IpAddressInputExampleProps>
 					required={true} // optional (default: false)
 					variant={"outlined"} // optional (default: "outlined")
 					label={_("ipAddress")} // optional if not set no label will be displayed
-					value={props.native.ipAddress} // optional if not set the input is empty
+					value={value} // required
 					onChange={handleChange} // required
 					color={'success'} // optional (default: "primary")
 					error={true} // optional (default: false)

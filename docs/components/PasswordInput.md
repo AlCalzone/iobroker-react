@@ -34,7 +34,7 @@ type PasswordColors = {
 
 ```tsx
 interface PasswordInputProps {
-	value?: string;  // password value from the Native object
+	value: string;  // password value from the Native object is required
 	onChange: (value: string) => void;  // onChange function returns the new password value
 	classNames?: Partial<{  // CSS classes for the input field and the show/hide button
 		formControl: string;
@@ -74,10 +74,10 @@ interface PasswordInputProps {
 	tooltip?: Partial<TooltipProps>; // Tooltip props title, placement, arrow, etc. title is required
 }
 ```
-**All properties of `PasswordInput` that can be seen above in the `PasswordInputProps` interface are optional except `onChange` which must always be specified.**
+**All properties of `PasswordInput` that can be seen above in the `PasswordInputProps` interface are optional except `onChange` and `value` which must always be specified.**
 
 The `onChange` function is called when the value of the input field changes. The `onChange` function returns the new value of the input field.\
-The `value` prop is used to set the value of the input field. If the `value` prop is not set, the input field is empty.\
+The `value` prop is used to set the value of the input field.\
 The `classNames` prop can be used to control the CSS classes of the input field and the show/hide button.\
 You can use the `classNames` with the `style.css` or with the `makeStyles` function of Material UI.\
 The `classNames` prop has the following properties:
@@ -120,6 +120,7 @@ export const PasswordInputExample: React.FC<PasswordInputExampleProps>
 = (props): JSX.Element => {
 	const { translate: _ } = useI18n(); // translate function
 	const classes = useStyles(); // CSS classes
+	const [value, setValue] = React.useState<number>(props.native.password || '');
 	const [error, setError] = React.useState<{
 		message: string;
 		error: boolean;
@@ -139,6 +140,7 @@ export const PasswordInputExample: React.FC<PasswordInputExampleProps>
 					error: true,
 					color: "error",
 				});
+				setValue("");
 				props.onChange('password', value) // your update password function here 
 				return;
 			}
@@ -148,6 +150,7 @@ export const PasswordInputExample: React.FC<PasswordInputExampleProps>
 				error: true,
 				color: "error",
 			});
+      
 		} else {
             setError({
 				...error,
@@ -155,6 +158,7 @@ export const PasswordInputExample: React.FC<PasswordInputExampleProps>
 				error: false,
 				color: "success",
 			});
+			setValue(value);
 			props.onChange('password', value) // your update password function here 
     }
 	};
@@ -170,8 +174,8 @@ export const PasswordInputExample: React.FC<PasswordInputExampleProps>
 			// 		width: "200px",  // mui-v5 only
 			// 	},
 			// }}
-			value={props.native.password} // your password value here from your database
-			onChange={validatePassword}  // your password change function here
+			value={value} // required
+			onChange={validatePassword}  // required your password change function here
 			colors={{ color: error.color }} 
 			error={error.error} 
 			helperText={error.message}

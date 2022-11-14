@@ -15,11 +15,6 @@ import type { TooltipProps } from "@mui/material/Tooltip/Tooltip";
 import type { SxProps } from "@mui/system";
 import React from "react";
 
-interface State {
-	password: string;
-	showPassword: boolean;
-}
-
 export type PasswordColors = {
 	iconOn:
 		| "inherit"
@@ -45,7 +40,7 @@ export type PasswordColors = {
 };
 
 export interface PasswordInputProps {
-	value?: string;
+	value: string;
 	onChange: (value: string) => void;
 	classNames?: Partial<{
 		formControl: string;
@@ -93,21 +88,17 @@ function randomId() {
 export const PasswordInput: React.FC<PasswordInputProps> = (
 	props,
 ): JSX.Element => {
-	const [values, setValues] = React.useState<State>({
-		password: props.value || "",
-		showPassword: false,
-	});
+	const [showPassword, setShowPassword] = React.useState<boolean>(false);
 
 	const handleClickShowPassword = (): void => {
-		setValues({ ...values, showPassword: !values.showPassword });
+		setShowPassword(!showPassword);
 	};
 
-	const handleChangePassword =
-		(prop: keyof State) =>
-		(event: React.ChangeEvent<HTMLInputElement>): void => {
-			setValues({ ...values, [prop]: event.target.value });
-			props.onChange(event.target.value);
-		};
+	const handleChangePassword = (
+		event: React.ChangeEvent<HTMLInputElement>,
+	): void => {
+		props.onChange(event.target.value);
+	};
 
 	const handleMouseDownPassword = (
 		event: React.MouseEvent<HTMLButtonElement>,
@@ -120,9 +111,9 @@ export const PasswordInput: React.FC<PasswordInputProps> = (
 			return (
 				<Input
 					id={`passwordField-${randomId()}`}
-					type={values.showPassword ? "text" : "password"}
-					value={values.password}
-					onChange={handleChangePassword("password")}
+					type={showPassword ? "text" : "password"}
+					value={props.value || ""}
+					onChange={handleChangePassword}
 					error={props.error}
 					className={props.classNames?.outlinedInput}
 					sx={props.sx?.outlinedInput}
@@ -143,7 +134,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = (
 								onMouseDown={handleMouseDownPassword}
 								edge="end"
 							>
-								{values.showPassword ? (
+								{showPassword ? (
 									<VisibilityOff
 										className={props.classNames?.iconOff}
 										sx={props.sx?.iconOff}
@@ -168,9 +159,9 @@ export const PasswordInput: React.FC<PasswordInputProps> = (
 			return (
 				<FilledInput
 					id={`passwordField-${randomId()}`}
-					type={values.showPassword ? "text" : "password"}
-					value={values.password}
-					onChange={handleChangePassword("password")}
+					type={showPassword ? "text" : "password"}
+					value={props.value || ""}
+					onChange={handleChangePassword}
 					error={props.error}
 					className={props.classNames?.outlinedInput}
 					sx={props.sx?.outlinedInput}
@@ -191,7 +182,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = (
 								onMouseDown={handleMouseDownPassword}
 								edge="end"
 							>
-								{values.showPassword ? (
+								{showPassword ? (
 									<VisibilityOff
 										className={props.classNames?.iconOff}
 										sx={props.sx?.iconOff}
@@ -216,9 +207,9 @@ export const PasswordInput: React.FC<PasswordInputProps> = (
 		return (
 			<OutlinedInput
 				id={`passwordField-${randomId()}`}
-				type={values.showPassword ? "text" : "password"}
-				value={values.password}
-				onChange={handleChangePassword("password")}
+				type={showPassword ? "text" : "password"}
+				value={props.value || ""}
+				onChange={handleChangePassword}
 				error={props.error}
 				className={props.classNames?.outlinedInput}
 				sx={props.sx?.outlinedInput}
@@ -240,7 +231,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = (
 							onMouseDown={handleMouseDownPassword}
 							edge="end"
 						>
-							{values.showPassword ? (
+							{showPassword ? (
 								<VisibilityOff
 									className={props.classNames?.iconOff}
 									sx={props.sx?.iconOff}

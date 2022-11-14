@@ -8,7 +8,7 @@ import { NumberInput } from "iobroker-react/components";
 ```tsx
 interface NumberInputProps {
 	label?: string; // Label for the input field 
-	value?: number; // Value of the input field 
+	value: number; // Value of the input field 
 	defaultValue?: number; // Default value of the input field
 	onChange: (value: number) => void; // Callback when the value changes
 	required?: boolean; // Is the input field required?
@@ -38,10 +38,10 @@ interface NumberInputProps {
 	tooltip?: Partial<TooltipProps>; // Tooltip props title, placement, arrow, etc. title is required
 }
 ```
-**All properties of `NumberInput` that can be seen above in the `NumberInputProps` interface are optional except `onChange` which must always be specified.**
+**All properties of `NumberInput` that can be seen above in the `NumberInputProps` interface are optional except `onChange` and `value` which must always be specified.**
 
 The `onChange` function is called when the value of the input field changes. The `onChange` function returns the new value of the input field.\
-The `value` prop is used to set the value of the input field. If the `value` prop is not set, the input field is empty.
+The `value` prop is used to set the value of the input field.
 
 With the `defaultValue` property you can set a default value for the input field.\
 With the properties `min` and `max` you can set a minimum and maximum value for the input field.\
@@ -85,6 +85,7 @@ export const NumberInputExample: React.FC<NumberInputExampleProps>
 = (props): JSX.Element => {
 	const { translate: _ } = useI18n(); // Translate function
 	const classes = useStyles(); // CSS styles
+	const [value, setValue] = React.useState<number>(props.native.number_input || 0);
 	const [error, setError] = React.useState<{
 		message: string;
 		error: boolean;
@@ -114,6 +115,7 @@ export const NumberInputExample: React.FC<NumberInputExampleProps>
 			});
       	     
 		}
+		setValue(value);
 		props.onChange("number_input", value);   // update your database with the new value
 	};
 
@@ -122,7 +124,7 @@ export const NumberInputExample: React.FC<NumberInputExampleProps>
 				<NumberInput
 					variant={"outlined"} // optional (default: "outlined")
 					label={_("Number Input")} // optional if not set no label will be displayed
-					value={props.native.number_input} // optional if not set the input field will be 0  
+					value={value} // required
 					defaultValue={0} // optional if not set the input field will be 0
 					onChange={handleNumberInput} // required
 					color={error.color} // optional (default: "primary")
