@@ -1,5 +1,7 @@
 import type { Theme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
+import type { TooltipProps } from "@mui/material/Tooltip/Tooltip";
 import type { SxProps } from "@mui/system";
 import React from "react";
 
@@ -34,6 +36,7 @@ export interface IpAddressInputProps {
 		valid: string; // Helper text for the input field when the value is valid
 	}>;
 	placeholder?: string; // Placeholder for the input field
+	tooltip?: Partial<TooltipProps>;
 }
 
 const allowedInputRegex = /^\d*\.?\d*\.?\d*\.?\d*$/;
@@ -110,37 +113,39 @@ export const IpAddressInput: React.FC<IpAddressInputProps> = (
 
 	return (
 		<React.Fragment>
-			<TextField
-				fullWidth
-				variant={props.variant || "outlined"}
-				type={"text"}
-				label={props.label}
-				value={ipAddress}
-				color={values.color || "primary"}
-				error={values.error || false}
-				FormHelperTextProps={{
-					className: props.classNames?.helperText,
-					sx: props.sx?.helperText,
-					disabled: props.disabled,
-				}}
-				InputProps={{
-					className: props.classNames?.inputProps,
-					inputProps: {
-						maxLength: props.maxLength || 15,
-						style: {
-							textAlign: props.textAlign || "left",
+			<Tooltip title={props.tooltip?.title} {...props.tooltip}>
+				<TextField
+					fullWidth
+					variant={props.variant || "outlined"}
+					type={"text"}
+					label={props.label}
+					value={ipAddress}
+					color={values.color || "primary"}
+					error={values.error || false}
+					FormHelperTextProps={{
+						className: props.classNames?.helperText,
+						sx: props.sx?.helperText,
+						disabled: props.disabled,
+					}}
+					InputProps={{
+						className: props.classNames?.inputProps,
+						inputProps: {
+							maxLength: props.maxLength || 15,
+							style: {
+								textAlign: props.textAlign || "left",
+							},
 						},
-					},
-					sx: props.sx?.inputProps,
-				}}
-				sx={props.sx?.input}
-				helperText={values.helperText}
-				required={props.required || false}
-				disabled={props.disabled || false}
-				className={props.classNames?.input}
-				onChange={handleIpAddress}
-				placeholder={props.placeholder}
-			/>
+						sx: props.sx?.inputProps,
+					}}
+					sx={props.sx?.input}
+					helperText={values.helperText}
+					required={props.required || false}
+					disabled={props.disabled || false}
+					className={props.classNames?.input}
+					onChange={handleIpAddress}
+					placeholder={props.placeholder}
+				/>
+			</Tooltip>
 		</React.Fragment>
 	);
 };

@@ -42,6 +42,7 @@ interface IpAddressInputProps {
 		valid: string; // Helper text for the input field when the value is valid
 	}>;
 	placeholder?: string; // Placeholder for the input field
+	tooltip?: Partial<TooltipProps>; // Tooltip props title, placement, arrow, etc. title is required
 }
 ```
 
@@ -70,8 +71,8 @@ The `textAlign` prop can be used to control the text alignment of the input fiel
 Via the property `error` the function that colors the input field `red` and if you have defined `color` (e.g. `color="success"`) the color\
 is set to `success = green` if you have also defined `helperText` (e.g. `helperText={ default: "Enter a valid IP address", valid: "IP address is valid",
 invalid: "IP address is invalid" }`)\
-the `helperText` is set to `valid` if the input is valid and  to `invalid` if the input is invalid then displayed below the input field.
-
+the `helperText` is set to `valid` if the input is valid and  to `invalid` if the input is invalid then displayed below the input field.\
+With the `tooltip` prop you can set the tooltip of the input field. The tooltip is shown when the user hovers over the input field.
 
 
 ## Example
@@ -95,8 +96,8 @@ interface IpAddressInputExampleProps {
 
 export const IpAddressInputExample: React.FC<IpAddressInputExampleProps>
 = (props): JSX.Element => {
-	const { translate: _ } = useI18n();
-	const classes = useStyles();
+	const { translate: _ } = useI18n(); // translate function
+	const classes = useStyles(); // CSS classes
   
   const handleChange = (value: string, valid?: boolean) => {
     // if you work with validation you can do the validation here and then call the onChange function
@@ -128,6 +129,11 @@ export const IpAddressInputExample: React.FC<IpAddressInputExampleProps>
 					classNames={{ input: classes.input}} // mui-v4 and mui-v5  optional
 					maxLength={15} // optional (default: 15 for IPv4)
 					placeholder={"192.168.179.10"} // optional
+					tooltip={{
+						title: _("ipAddress_Tooltip"), // required if not set no tooltip will be displayed
+						arrow: true, // optional shows an arrow at the tooltip (default: true)
+						placement: "top", // optional position of the tooltip (default: "bottom")
+					}}
 				/>
             </div>
 		);

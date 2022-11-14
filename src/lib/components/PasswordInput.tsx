@@ -1,16 +1,17 @@
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import {
-	FilledInput,
-	FormControl,
-	FormHelperText,
-	IconButton,
-	Input,
-	InputAdornment,
-	InputLabel,
-	OutlinedInput,
-} from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import FilledInput from "@mui/material/FilledInput";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
+import IconButton from "@mui/material/IconButton";
+import Input from "@mui/material/Input";
+import InputAdornment from "@mui/material/InputAdornment";
 import type { InputBaseComponentProps } from "@mui/material/InputBase/InputBase";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import type { Theme } from "@mui/material/styles";
+import Tooltip from "@mui/material/Tooltip";
+import type { TooltipProps } from "@mui/material/Tooltip/Tooltip";
 import type { SxProps } from "@mui/system";
 import React from "react";
 
@@ -81,6 +82,7 @@ export interface PasswordInputProps {
 	required?: boolean;
 	disabled?: boolean;
 	placeholder?: string;
+	tooltip?: Partial<TooltipProps>;
 }
 
 // funktion create random id for input
@@ -285,7 +287,9 @@ export const PasswordInput: React.FC<PasswordInputProps> = (
 						{props.label ? props.label : "Password"}
 					</InputLabel>
 				) : null}
-				{inputTyps(props.variant)}
+				<Tooltip title={props.tooltip?.title} {...props.tooltip}>
+					{inputTyps(props.variant)}
+				</Tooltip>
 				{props.helperText && (
 					<FormHelperText
 						className={props.classNames?.helperText}

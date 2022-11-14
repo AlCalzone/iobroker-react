@@ -1,6 +1,8 @@
 import InputAdornment from "@mui/material/InputAdornment";
 import type { Theme } from "@mui/material/styles";
 import TextField from "@mui/material/TextField";
+import Tooltip from "@mui/material/Tooltip";
+import type { TooltipProps } from "@mui/material/Tooltip/Tooltip";
 import type { SxProps } from "@mui/system";
 import React from "react";
 
@@ -33,6 +35,7 @@ export interface NumberInputProps {
 	error?: boolean; // Is the input field in error state?
 	helperText?: string; // Helper text for the input field
 	unit?: string; // Unit for the input field
+	tooltip?: Partial<TooltipProps>;
 }
 
 export const NumberInput: React.FC<NumberInputProps> = (props): JSX.Element => {
@@ -62,41 +65,43 @@ export const NumberInput: React.FC<NumberInputProps> = (props): JSX.Element => {
 
 	return (
 		<React.Fragment>
-			<TextField
-				variant={props.variant || "outlined"}
-				type={"number"}
-				label={props.label}
-				value={values}
-				fullWidth
-				color={props.color || "primary"}
-				error={props.error || false}
-				FormHelperTextProps={{
-					className: props.classNames?.helperText,
-					sx: props.sx?.helperText,
-					disabled: props.disabled,
-				}}
-				InputProps={{
-					className: props.classNames?.inputProps,
-					inputProps: {
-						step: props.step || 1,
-						style: {
-							textAlign: props.textAlign || "left",
+			<Tooltip title={props.tooltip?.title} {...props.tooltip}>
+				<TextField
+					variant={props.variant || "outlined"}
+					type={"number"}
+					label={props.label}
+					value={values}
+					fullWidth
+					color={props.color || "primary"}
+					error={props.error || false}
+					FormHelperTextProps={{
+						className: props.classNames?.helperText,
+						sx: props.sx?.helperText,
+						disabled: props.disabled,
+					}}
+					InputProps={{
+						className: props.classNames?.inputProps,
+						inputProps: {
+							step: props.step || 1,
+							style: {
+								textAlign: props.textAlign || "left",
+							},
 						},
-					},
-					sx: props.sx?.inputProps,
-					endAdornment: (
-						<InputAdornment position={"end"}>
-							{props.unit || ""}
-						</InputAdornment>
-					),
-				}}
-				sx={props.sx?.input}
-				helperText={props.helperText}
-				required={props.required || false}
-				disabled={props.disabled || false}
-				className={props.classNames?.input}
-				onChange={handleChange}
-			/>
+						sx: props.sx?.inputProps,
+						endAdornment: (
+							<InputAdornment position={"end"}>
+								{props.unit || ""}
+							</InputAdornment>
+						),
+					}}
+					sx={props.sx?.input}
+					helperText={props.helperText}
+					required={props.required || false}
+					disabled={props.disabled || false}
+					className={props.classNames?.input}
+					onChange={handleChange}
+				/>
+			</Tooltip>
 		</React.Fragment>
 	);
 };

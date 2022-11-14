@@ -35,6 +35,7 @@ interface NumberInputProps {
 	error?: boolean; // Is the input field in error state?
 	helperText?: string; // Helper text for the input field
 	unit?: string; // Unit of the input field
+	tooltip?: Partial<TooltipProps>; // Tooltip props title, placement, arrow, etc. title is required
 }
 ```
 **All properties of `NumberInput` that can be seen above in the `NumberInputProps` interface are optional except `onChange` which must always be specified.**
@@ -56,7 +57,8 @@ The `classNames` prop has the following properties:
 The `sx` prop can be used to control the style of the input field and the show/hide button only for mui-v5. The sx prop has the following properties:
   - same as `classNames`
 
-The `textAlign` prop can be used to control the text alignment of the input field.
+The `textAlign` prop can be used to control the text alignment of the input field.\
+With the `tooltip` prop you can set the tooltip of the input field. The tooltip is shown when the user hovers over the input field.
 
 
 
@@ -66,6 +68,7 @@ The `textAlign` prop can be used to control the text alignment of the input fiel
 import React from "react";
 import { NumberInput, NumberInputProps } from "iobroker-react/components";
 import { makeStyles } from "@mui/styles";
+import { useI18n } from 'iobroker-react/hooks';
 
 const useStyles = makeStyles((theme) => ({
 	input: {
@@ -80,7 +83,8 @@ interface NumberInputExampleProps {
 
 export const NumberInputExample: React.FC<NumberInputExampleProps>
 = (props): JSX.Element => {
-	const classes = useStyles();
+	const { translate: _ } = useI18n(); // Translate function
+	const classes = useStyles(); // CSS styles
 	const [error, setError] = React.useState<{
 		message: string;
 		error: boolean;
@@ -117,7 +121,7 @@ export const NumberInputExample: React.FC<NumberInputExampleProps>
             <div>
 				<NumberInput
 					variant={"outlined"} // optional (default: "outlined")
-					label={"Number Input"} // optional if not set no label will be displayed
+					label={_("Number Input")} // optional if not set no label will be displayed
 					value={props.native.number_input} // optional if not set the input field will be 0  
 					defaultValue={0} // optional if not set the input field will be 0
 					onChange={handleNumberInput} // required
@@ -131,6 +135,11 @@ export const NumberInputExample: React.FC<NumberInputExampleProps>
 					step={1} // optional (default: 1)
 					textAlign={"center"} // optional (default: "left")
 					unit={"°C"} // optional if not set no unit will be displayed
+					tooltip={{
+						title: _("temperature_Tooltip"), // required if not set no tooltip will be displayed
+						arrow: true, // optional shows an arrow at the tooltip (default: true)
+						placement: "top", // optional position of the tooltip (default: "bottom")
+					}}
 				/>
             </div>
 		);

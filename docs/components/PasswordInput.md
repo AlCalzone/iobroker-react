@@ -71,6 +71,7 @@ interface PasswordInputProps {
 	required?: boolean; // set to true to mark the input field as required
 	disabled?: boolean; // set to true to disable the input field
 	placeholder?: string; // placeholder for the input field
+	tooltip?: Partial<TooltipProps>; // Tooltip props title, placement, arrow, etc. title is required
 }
 ```
 **All properties of `PasswordInput` that can be seen above in the `PasswordInputProps` interface are optional except `onChange` which must always be specified.**
@@ -93,7 +94,8 @@ The `classNames` prop has the following properties:
 
 The `sx` prop can be used to control the style of the input field and the show/hide button only for mui-v5. The sx prop has the following properties:
   - same as `classNames`
-
+	
+Wih the `tooltip` prop you can set the tooltip of the input field. The tooltip is shown when the user hovers over the input field.
 
 ## Example
 
@@ -101,6 +103,7 @@ The `sx` prop can be used to control the style of the input field and the show/h
 import React from "react";
 import { PasswordInput, PasswordColors } from "iobroker-react/components";
 import { makeStyles } from "@mui/styles";
+import { useI18n } from 'iobroker-react/hooks';
 
 const useStyles = makeStyles((theme) => ({
 	formControl: {
@@ -115,7 +118,8 @@ interface PasswordInputExampleProps {
 
 export const PasswordInputExample: React.FC<PasswordInputExampleProps>
 = (props): JSX.Element => {
-	const classes = useStyles();
+	const { translate: _ } = useI18n(); // translate function
+	const classes = useStyles(); // CSS classes
 	const [error, setError] = React.useState<{
 		message: string;
 		error: boolean;
@@ -156,7 +160,7 @@ export const PasswordInputExample: React.FC<PasswordInputExampleProps>
 	};
 	return (
 		<PasswordInput 
-			label={"Password"} 
+			label={_("password")}  
 			variant={"standard"} 
 			required={true} 
 			placeholder={"Enter your password"} 
@@ -171,6 +175,11 @@ export const PasswordInputExample: React.FC<PasswordInputExampleProps>
 			colors={{ color: error.color }} 
 			error={error.error} 
 			helperText={error.message}
+			tooltip={{
+				title: _("password_Tooltip"), // required if not set no tooltip will be displayed
+				arrow: true, // optional shows an arrow at the tooltip (default: true)
+				placement: "top", // optional position of the tooltip (default: "bottom")
+			}}
 		/>
 	);
 }
