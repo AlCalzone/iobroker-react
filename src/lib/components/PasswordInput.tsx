@@ -45,8 +45,6 @@ export interface PasswordInputProps {
 	classNames?: Partial<{
 		formControl: string;
 		input: string;
-		filledInput: string;
-		outlinedInput: string;
 		inputLabel: string;
 		inputAdornment: string;
 		iconButton: string;
@@ -59,8 +57,6 @@ export interface PasswordInputProps {
 	sx?: Partial<{
 		formControl: SxProps<Theme>;
 		input: SxProps<Theme>;
-		filledInput: SxProps<Theme>;
-		outlinedInput: SxProps<Theme>;
 		inputLabel: SxProps<Theme>;
 		inputAdornment: SxProps<Theme>;
 		iconButton: SxProps<Theme>;
@@ -115,8 +111,8 @@ export const PasswordInput: React.FC<PasswordInputProps> = (
 					value={props.value || ""}
 					onChange={handleChangePassword}
 					error={props.error}
-					className={props.classNames?.outlinedInput}
-					sx={props.sx?.outlinedInput}
+					className={props.classNames?.input}
+					sx={props.sx?.input}
 					inputProps={props.inputProps}
 					aria-label={props.label ? props.label : "Password"}
 					placeholder={props.placeholder}
@@ -163,8 +159,8 @@ export const PasswordInput: React.FC<PasswordInputProps> = (
 					value={props.value || ""}
 					onChange={handleChangePassword}
 					error={props.error}
-					className={props.classNames?.outlinedInput}
-					sx={props.sx?.outlinedInput}
+					className={props.classNames?.input}
+					sx={props.sx?.input}
 					inputProps={props.inputProps}
 					aria-label={props.label ? props.label : "Password"}
 					placeholder={props.placeholder}
@@ -211,8 +207,8 @@ export const PasswordInput: React.FC<PasswordInputProps> = (
 				value={props.value || ""}
 				onChange={handleChangePassword}
 				error={props.error}
-				className={props.classNames?.outlinedInput}
-				sx={props.sx?.outlinedInput}
+				className={props.classNames?.input}
+				sx={props.sx?.input}
 				inputProps={props.inputProps}
 				label={props.label ? props.label : "Password"}
 				aria-label={props.label ? props.label : "Password"}
