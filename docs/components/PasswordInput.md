@@ -39,8 +39,6 @@ interface PasswordInputProps {
 	classNames?: Partial<{  // CSS classes for the input field and the show/hide button
 		formControl: string;
 		input: string;
-		filledInput: string;
-		outlinedInput: string;
 		inputLabel: string;
 		inputAdornment: string;
 		iconButton: string;
@@ -53,8 +51,6 @@ interface PasswordInputProps {
 	sx?: Partial<{ // style for the input field and the show/hide button mui-v5 only
 		formControl: SxProps<Theme>;
 		input: SxProps<Theme>;
-		filledInput: SxProps<Theme>;
-		outlinedInput: SxProps<Theme>;
 		inputLabel: SxProps<Theme>;
 		inputAdornment: SxProps<Theme>;
 		iconButton: SxProps<Theme>;
@@ -83,8 +79,6 @@ You can use the `classNames` with the `style.css` or with the `makeStyles` funct
 The `classNames` prop has the following properties:
 - `input`: CSS class for the Input component (e.g. with `useStyles` => `input={{ classes.input }}` or with `style.css` => `input={{ className: "my-input" }}`)
 - `formControl`: CSS class for the FormControl component
-- `filledInput`: CSS class for the FilledInput component
-- `outlinedInput`: CSS class for the OutlinedInput component
 - `inputLabel`: CSS class for the InputLabel component
 - `inputAdornment`: CSS class for the InputAdornment component
 - `iconButton`: CSS class for the IconButton component
