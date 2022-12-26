@@ -53,6 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		main: {
 			flex: "1 1 auto",
 			padding: theme.spacing(2, 4),
+			overflow: "auto", // pin the footer to the bottom
 		},
 		buttons: {
 			flex: "0 0 auto",
