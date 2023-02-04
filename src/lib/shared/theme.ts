@@ -134,10 +134,8 @@ function getElevation(
 function getElevations(
 	color: string,
 	overlay: string,
-	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-	// @ts-ignore
 	// eslint-disable-next-line @typescript-eslint/ban-types
-): Partial<StyleRules<PaperClassKey, {}>> {
+): Partial<StyleRules<{}, PaperClassKey>> {
 	const elevations: Record<string, any> = {};
 
 	for (let i = 1; i <= 24; i++) {
@@ -181,7 +179,6 @@ export function setActiveTheme(theme: ThemeName): void {
 const getTheme = (type: ThemeName): Theme => {
 	let theme: ThemeOptions;
 	if (type === "dark") {
-		// @ts-expect-error This is fine!
 		theme = {
 			name: type,
 			palette: {
@@ -231,11 +228,11 @@ const getTheme = (type: ThemeName): Theme => {
 						},
 					},
 				},
+				// @ts-expect-error This is fine!
 				MuiPaper: getElevations("#121212", "#fff"),
 			},
 		};
 	} else if (type === "blue") {
-		// @ts-expect-error This is fine!
 		theme = {
 			name: type,
 			palette: {
@@ -285,6 +282,7 @@ const getTheme = (type: ThemeName): Theme => {
 						},
 					},
 				},
+				// @ts-expect-error This is fine!
 				MuiPaper: getElevations("#151d21", "#fff"),
 			},
 		};
