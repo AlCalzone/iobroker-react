@@ -1,4 +1,4 @@
-# `TreeTable` 
+# `TreeTable`
 
 `TreeTable` is a component that displays a table view with tree structure.
 You can `add` new rows, `edit` and `delete` existing rows and `sorting` of rows is available.
@@ -20,14 +20,12 @@ interface TreeColumnProps {
 	subLookup?: object;  // lookup object for subcell
 	subField?: string; // field name of the subcell
 }
-```
-```ts
+
 interface TreeDataProps {
 	id: string; // unique id of the row
 	[field: string]: any;
 }
-```
-```ts
+
 interface TreeTableProps {
 	name?: string; // name of table to save settings in localStorage
 	columns: TreeColumnProps[]; // Array of columns
@@ -36,7 +34,7 @@ interface TreeTableProps {
 	newData?: (data: TreeDataProps[]) => void; // callback for new data
 	noAdd?: boolean; // If true, the add button is not displayed
 	noDelete?: boolean; // If true, the delete button is not displayed
-  	noEdit?: boolean; // If true, the edit button is not displayed
+	noEdit?: boolean; // If true, the edit button is not displayed
 	noSort?: boolean; // If true, the sort funktion is not available
 	className?: string; // CSS class of the table
 	glowOnChange?: boolean; // If true, the row is highlighted when the value is changed
@@ -44,6 +42,7 @@ interface TreeTableProps {
 	levelShift?: number; // Shift in pixels for every level
 }
 ```
+
 ### `add Button`
 If you want to create a new line, you have to set the `newLineData` property. This will be used when clicking the `+` button to create a new line.
 After creating a new line the `newData` callback function is called. This function gets the new array with the data as parameter.
@@ -57,7 +56,6 @@ If you don't need the edit button, you can hide it with the `noEdit` property, w
 ### `delete Button`
 After deleting a line the `newData` callback function is called. This function gets the new array with the data as parameter.
 If you don't need the delete button, you can hide it with the `noDelete` property, which must be set to `true`.
-
 
 ## `Example`
 ```tsx
@@ -156,4 +154,3 @@ const ExampleComponent: React.FC = () => {
 	);
 };
 ```
-

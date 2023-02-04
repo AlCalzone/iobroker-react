@@ -81,8 +81,7 @@ interface NumberInputExampleProps {
 	onChange: (attr: string, value: number) => void;
 }
 
-export const NumberInputExample: React.FC<NumberInputExampleProps>
-= (props): JSX.Element => {
+export const NumberInputExample: React.FC<NumberInputExampleProps> = (props): JSX.Element => {
 	const { translate: _ } = useI18n(); // Translate function
 	const classes = useStyles(); // CSS styles
 	const [value, setValue] = React.useState<number>(props.native.number_input || 0);

@@ -25,7 +25,7 @@ This component displays the loading ioBroker icon. The original version from `@i
 
 ## `Logo`
 
-This component displays the ioBroker logo with config download and upload buttons.\
+This component displays the ioBroker logo with config download and upload buttons.  
 → [Documentation](components/Logo.md)
 
 ## `SaveCloseButtons`
@@ -36,20 +36,20 @@ You shouldn't need to use it directly.
 
 ## `TreeTable`
 
-This component displays a table with a tree structure. It is a simplified and cleaned up version of the component from `@iobroker/adapter-react-v5`.\
+This component displays a table with a tree structure. It is a simplified and cleaned up version of the component from `@iobroker/adapter-react-v5`.  
 → [Documentation](components/TreeTable.md)
 
 ## `PasswordInput`
 
-This component displays a password input field. das Passwort kann angezeigt werden und auch wieder ausgeblendet werden.\
+This component displays a password input field. The password can be revealed and hidden again  
 → [Documentation](components/PasswordInput.md)
 
 ## `NumberInput`
 
-A thin wrapper around Material UI's `TextField` component, specifically for numbers.\
+A thin wrapper around Material UI's `TextField` component, specifically for numbers.  
 → [Documentation](components/NumberInput.md)
 
 ## `IpAddressInput`
 
-A thin wrapper around Material UI's `TextField` component, specifically for IP addresses with validation.\
+A thin wrapper around Material UI's `TextField` component, specifically for IP addresses with validation.  
 → [Documentation](components/IpAddressInput.md)
