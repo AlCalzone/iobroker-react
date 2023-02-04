@@ -19,13 +19,13 @@ export const Logo: React.FC<LogoProps> = (props): JSX.Element => {
 	);
 
 	const errorNotification = React.useCallback(
-		(error) => {
+		(error: string) => {
 			showNotification(error, "error");
 		},
 		[showNotification],
 	);
 	const successNotification = React.useCallback(
-		(msg) => {
+		(msg: string) => {
 			showNotification(msg, "success");
 		},
 		[showNotification],
@@ -43,12 +43,10 @@ export const Logo: React.FC<LogoProps> = (props): JSX.Element => {
 	return (
 		<LogoRA
 			instance={instance}
-			common={myObject ? myObject.common : {}}
-			native={myObject ? myObject.native : {}}
-			onError={(error: string) => errorNotification(error)}
-			onLoad={(native: ioBroker.AdapterConfig) =>
-				handleLoadConfig(native)
-			}
+			common={myObject?.common ?? {}}
+			native={myObject?.native ?? {}}
+			onError={errorNotification}
+			onLoad={handleLoadConfig}
 			classes={{
 				buttons: props.classes?.buttons ?? "",
 				logo: props.classes?.logo ?? "",
