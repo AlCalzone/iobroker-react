@@ -1,67 +1,125 @@
 # `TreeTable`
 
-`TreeTable` is a component that displays a table view with tree structure.
-You can `add` new rows, `edit` and `delete` existing rows and `sorting` of rows is available.
-Currently, the following columnTypes are available: `string, number, oid, color, numeric, boolean, select`.
+This components displays a table view with tree structure. It is possible to **add** new rows, **edit** and **delete** existing rows and **sort** the displayed rows.
 
 ![TreeTable](../_images/TreeTable.png)
+
+The `TreeTable` has the following props:
+
 ```ts
-interface TreeColumnProps {
-	title: string; // title of the column
-	field: string;  // field name of the column
-	cellStyle?: object; // style of the cell
-	editComponent?: (props: any) => void; // custom edit component
-	headerStyle?: object; // style of the header
-	hidden?: boolean; // hide column
-	lookup?: object; // lookup object for select type
-	editable?: true | false; // is column editable
-	type?: "string" | "numeric" | "boolean" | "oid" | "color"; // type of the column
-	subStyle?: object; // style of the subcell
-	subLookup?: object;  // lookup object for subcell
-	subField?: string; // field name of the subcell
-}
+export interface TreeTableProps {
+	/** The name under which the table data gets saved in localStorage */
+	name?: string;
 
-interface TreeDataProps {
-	id: string; // unique id of the row
-	[field: string]: any;
-}
+	/** Definitions for all colunms */
+	columns: TreeColumnProps[];
+	/** The data to display */
+	data: TreeTableRow[];
 
-interface TreeTableProps {
-	name?: string; // name of table to save settings in localStorage
-	columns: TreeColumnProps[]; // Array of columns
-	data: TreeDataProps[]; // Array of data
-	newLineData?: TreeDataProps; // default data for new line
-	newData?: (data: TreeDataProps[]) => void; // callback for new data
-	noAdd?: boolean; // If true, the add button is not displayed
-	noDelete?: boolean; // If true, the delete button is not displayed
-	noEdit?: boolean; // If true, the edit button is not displayed
-	noSort?: boolean; // If true, the sort funktion is not available
-	className?: string; // CSS class of the table
-	glowOnChange?: boolean; // If true, the row is highlighted when the value is changed
-	socket?: any; // Socket to use for the oid column only
-	levelShift?: number; // Shift in pixels for every level
+	/** Gets called when the ADD button is clicked. The parent component must handle adding a new row. */
+	onAdd?: () => void;
+	/** Gets called when the data was updated */
+	onChange?: (data: TreeTableRow[]) => void;
+
+	/** Whether adding new rows is enabled. Requires `allowEdit` to be `true`. Default: `true` */
+	allowAdd?: boolean;
+	/** Whether editing existing rows is enabled. Default: `true` */
+	allowEdit?: boolean;
+	/** Whether sorting is enabled. Default: `true` */
+	allowSorting?: boolean;
+	/** Whether deleting existing rows is enabled. Default: `true` */
+	allowDelete?: boolean;
+
+	/** CSS class of the rendered table */
+	className?: string;
+	/** If true, the row is highlighted when the value is changed */
+	glowOnChange?: boolean;
+
+	/** Indentation between levels in pixels */
+	indentation?: number;
 }
 ```
 
-### `add Button`
+Each column has the following props:
+
+```ts
+export interface TreeColumnProps {
+	/** The title of this column */
+	title: string;
+	/** Which edit field should be used for this column */
+	type?: "string" | "numeric" | "boolean" | "oid" | "color";
+
+	/** Name of this column's field */
+	field: string;
+	/** Name of this column's sub-field (optional) */
+	subField?: string;
+
+	/** CSS style overrides for the header */
+	headerStyle?: CSSProperties;
+	/** CSS style overrides for cells */
+	cellStyle?: CSSProperties;
+	/** CSS style overrides for sub-field blocks */
+	subStyle?: CSSProperties;
+
+	/** Whether this column is editable. Default: `true` */
+	editable?: boolean;
+	/** Whether this column is hidden. Default: `false` */
+	hidden?: boolean;
+	/** Can be used to provide a custom edit component */
+	editComponent?: (props: TreeColumnEditComponentProps) => JSX.Element;
+
+	/** When set, a dropdown will be rendered to edit this field */
+	options?: Record<string, any>;
+	/** When set, a dropdown will be rendered to edit this column's sub-field */
+	subFieldOptions?: Record<string, any>;
+}
+```
+
+And the rows have the following shape:
+
+```ts
+export interface TreeTableRow {
+	id: string;
+	/** Used to nest this row inside another one */
+	parentId?: string;
+	/** The data for this row */
+	[field: string]: any;
+}
+```
+
+The custom edit component has these props:
+
+```ts
+export interface TreeColumnEditComponentProps {
+	value: any;
+	rowData: TreeTableRow;
+	onChange: (newData: TreeTableRow) => void;
+}
+```
+
+### Adding data to the table with the ADD button
+
+When the ADD button is clicked, the component will call the `onAdd` callback. The parent component must then handle adding a new row to the `data`. To disable adding data, set `allowAdd` to `false`, or disable editing altogether by setting `allowEdit` to `false`.
+
 If you want to create a new line, you have to set the `newLineData` property. This will be used when clicking the `+` button to create a new line.
 After creating a new line the `newData` callback function is called. This function gets the new array with the data as parameter.
 If you don't need the add button, you can hide it with the `noAdd` property, which must be set to `true`.
 
-### `edit Button`
-If you want to edit a line, you have to set the `editable` property of the column to `true`.
-After editing a line the `newData` callback function is called. This function gets the new array with the data as parameter.
-If you don't need the edit button, you can hide it with the `noEdit` property, which must be set to `true`.
+### Editing existing rows
 
-### `delete Button`
-After deleting a line the `newData` callback function is called. This function gets the new array with the data as parameter.
-If you don't need the delete button, you can hide it with the `noDelete` property, which must be set to `true`.
+By default, all data is editable. To disable this for single columns, set their `editable` property to `false`. To disable editing altogether, set `allowEdit` on the table to `false`.
+
+After a row is edited, the `onChange` callback will be called with the updated data.
+
+### Deleting rows
+
+After a row is deleted, the `onChange` callback will be called with the updated data. To disable deleting rows, set `allowDelete` to `false`.
 
 ## `Example`
+
 ```tsx
+import { TreeTable, TreeColumnProps, TreeTableRow } from "iobroker-react/components";
 import React from "react";
-import { TreeTable, TreeDataProps } from "iobroker-react";
-import { useConnection } from "iobroker-react/hooks";
 
 const columns: TreeColumnProps[] = [
 	{
@@ -81,24 +139,12 @@ const columns: TreeColumnProps[] = [
 		field: "select",
 		editable: true,
 		type: "string",
-		lookup: { 1: "one", 2: "two", 3: "three" },
+		options: { 1: "one", 2: "two", 3: "three" },
 	},
 ];
 
-const newLine = {
-	id: Math.random().toString(36).substr(2, 9), // create random id
-	fieldIdInData: "your data",
-	oid: "myOID",
-	color: "#ff0000",
-	numeric: 123,
-	select: "number",
-	boolean: true,
-	text: "your data",
-};
-
 const ExampleComponent: React.FC = () => {
-	const connection = useConnection();
-	const [treeData, setTreeData] = React.useState<TreeDataProps[]>([
+	const [treeData, setTreeData] = React.useState<TreeTableRow[]>([
 		{
 			id: "1",
 			fieldIdInData: "Test1",
@@ -132,22 +178,32 @@ const ExampleComponent: React.FC = () => {
 			select: "3",
 		},
 	]);
-  
+
+	const handleAdd = () => {
+		setTreeData(data => [
+			...data,
+			{
+				id: Math.random().toString(36).substr(2, 9), // create random id
+				fieldIdInData: "your data",
+				oid: "myOID",
+				color: "#ff0000",
+				numeric: 123,
+				select: "number",
+				boolean: true,
+				text: "your data",
+			},
+		]);
+	};
+
 	return (
 		<div>
 			<TreeTable
 				name="exampleTable"
 				columns={columns}
 				data={treeData}
-				newLineData={newLine}
-				newData={(data: TreeDataProps[]) => setTreeData(data)}
-				noAdd={false}
-				noEdit={false}
-				noSort={false}
-				noDelete={false}
-				className={undefined}
-				levelShift={20}
-				socket={connection}
+				onAdd={handleAdd}
+				newData={(data: TreeTableRow[]) => setTreeData(data)}
+				indentation={20}
 				glowOnChange={true}
 			/>
 		</div>

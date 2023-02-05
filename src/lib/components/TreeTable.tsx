@@ -10,42 +10,34 @@ export interface TreeColumnEditComponentProps {
 }
 
 export interface TreeColumnProps {
+	/** The title of this column */
 	title: string;
+	/** Which edit field should be used for this column */
 	type?: "string" | "numeric" | "boolean" | "oid" | "color";
 
+	/** Name of this column's field */
 	field: string;
+	/** Name of this column's sub-field (optional) */
 	subField?: string;
 
+	/** CSS style overrides for the header */
 	headerStyle?: CSSProperties;
+	/** CSS style overrides for cells */
 	cellStyle?: CSSProperties;
+	/** CSS style overrides for sub-field blocks */
 	subStyle?: CSSProperties;
 
+	/** Whether this column is editable. Default: `true` */
 	editable?: boolean;
+	/** Whether this column is hidden. Default: `false` */
 	hidden?: boolean;
+	/** Can be used to provide a custom edit component */
 	editComponent?: (props: TreeColumnEditComponentProps) => JSX.Element;
 
 	/** When set, a dropdown will be rendered to edit this field */
 	options?: Record<string, any>;
 	/** When set, a dropdown will be rendered to edit this column's sub-field */
 	subFieldOptions?: Record<string, any>;
-}
-
-// adapter-react has some weird naming choices, so we rename the column props here
-function treeColumnPropsToRA(columns: TreeColumnProps[]): (Omit<
-	TreeColumnProps,
-	"options" | "subFieldOptions"
-> & {
-	lookup?: Record<string, any>;
-	subLookup?: Record<string, any>;
-})[] {
-	return columns.map((props) => {
-		const { options, subFieldOptions, ...rest } = props;
-		return {
-			...rest,
-			lookup: options,
-			subLookup: subFieldOptions,
-		};
-	});
 }
 
 export interface TreeTableRow {
@@ -57,6 +49,7 @@ export interface TreeTableRow {
 }
 
 export interface TreeTableProps {
+	/** The name under which the table data gets saved in localStorage */
 	name?: string;
 
 	/** Definitions for all colunms */
@@ -78,11 +71,31 @@ export interface TreeTableProps {
 	/** Whether deleting existing rows is enabled. Default: `true` */
 	allowDelete?: boolean;
 
+	/** CSS class of the rendered table */
 	className?: string;
+	/** If true, the row is highlighted when the value is changed */
 	glowOnChange?: boolean;
 
 	/** Indentation between levels in pixels */
 	indentation?: number;
+}
+
+// adapter-react has some weird naming choices, so we rename the column props here
+function treeColumnPropsToRA(columns: TreeColumnProps[]): (Omit<
+	TreeColumnProps,
+	"options" | "subFieldOptions"
+> & {
+	lookup?: Record<string, any>;
+	subLookup?: Record<string, any>;
+})[] {
+	return columns.map((props) => {
+		const { options, subFieldOptions, ...rest } = props;
+		return {
+			...rest,
+			lookup: options,
+			subLookup: subFieldOptions,
+		};
+	});
 }
 
 export const TreeTable: React.FC<TreeTableProps> = (props): JSX.Element => {
