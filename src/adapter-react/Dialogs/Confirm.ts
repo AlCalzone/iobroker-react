@@ -1,1 +1,1 @@
-export { default } from "@iobroker/adapter-react/Dialogs/Confirm";
+export { default } from "@iobroker/adapter-react-v5/Dialogs/Confirm";

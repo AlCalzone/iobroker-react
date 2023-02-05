@@ -2,8 +2,8 @@ import type {
 	ObjectBrowserColumn,
 	ObjectBrowserCustomFilter,
 	ObjectBrowserType,
-} from "@iobroker/adapter-react/Components/types";
-import SelectIdRA from "@iobroker/adapter-react/Dialogs/SelectID";
+} from "@iobroker/adapter-react-v5/Components/types";
+import SelectIdRA from "@iobroker/adapter-react-v5/Dialogs/SelectID";
 import * as React from "react";
 import { useConnection } from "../hooks/useConnection";
 

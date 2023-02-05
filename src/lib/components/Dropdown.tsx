@@ -1,6 +1,6 @@
-import MenuItem from "@material-ui/core/MenuItem";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import Select, { SelectProps } from "@material-ui/core/Select";
+import MenuItem from "@mui/material/MenuItem";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Select, { SelectProps } from "@mui/material/Select";
 import * as React from "react";
 
 export interface DropdownOption {
@@ -9,6 +9,7 @@ export interface DropdownOption {
 }
 
 export type DropdownProps = {
+	label: string;
 	options?: DropdownOption[];
 	selectedOption: any;
 	noOptionsMessage?: string;
@@ -17,6 +18,7 @@ export type DropdownProps = {
 
 export const Dropdown: React.FC<DropdownProps> = (props) => {
 	const {
+		label,
 		options,
 		selectedOption,
 		noOptionsMessage,
@@ -32,8 +34,8 @@ export const Dropdown: React.FC<DropdownProps> = (props) => {
 	return (
 		<Select
 			value={value ?? ""}
+			input={<OutlinedInput />}
 			displayEmpty
-			input={<OutlinedInput labelWidth={0} />}
 			margin="dense"
 			{...otherProps}
 		>

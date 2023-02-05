@@ -1,1 +1,1 @@
-export { default } from "@iobroker/adapter-react/Components/ToggleThemeMenu";
+export { default } from "@iobroker/adapter-react-v5/Components/ToggleThemeMenu";

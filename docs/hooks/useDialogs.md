@@ -163,7 +163,7 @@ const MyComponent: React.FC = () => {
 ## Example 4: Let the user select an ID and show the selected ID and its state
 
 ```tsx
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import React from "react";
 import { useDialogs, useIoBrokerState } from "iobroker-react/hooks";
 

@@ -1,13 +1,14 @@
-import de from "@iobroker/adapter-react/i18n/de.json";
-import en from "@iobroker/adapter-react/i18n/en.json";
-import es from "@iobroker/adapter-react/i18n/es.json";
-import fr from "@iobroker/adapter-react/i18n/fr.json";
-import it from "@iobroker/adapter-react/i18n/it.json";
-import nl from "@iobroker/adapter-react/i18n/nl.json";
-import pl from "@iobroker/adapter-react/i18n/pl.json";
-import pt from "@iobroker/adapter-react/i18n/pt.json";
-import ru from "@iobroker/adapter-react/i18n/ru.json";
-import zhCn from "@iobroker/adapter-react/i18n/zh-cn.json";
+import de from "@iobroker/adapter-react-v5/i18n/de.json";
+import en from "@iobroker/adapter-react-v5/i18n/en.json";
+import es from "@iobroker/adapter-react-v5/i18n/es.json";
+import fr from "@iobroker/adapter-react-v5/i18n/fr.json";
+import it from "@iobroker/adapter-react-v5/i18n/it.json";
+import nl from "@iobroker/adapter-react-v5/i18n/nl.json";
+import pl from "@iobroker/adapter-react-v5/i18n/pl.json";
+import pt from "@iobroker/adapter-react-v5/i18n/pt.json";
+import ru from "@iobroker/adapter-react-v5/i18n/ru.json";
+import uk from "@iobroker/adapter-react-v5/i18n/uk.json";
+import zhCn from "@iobroker/adapter-react-v5/i18n/zh-cn.json";
 import React from "react";
 
 export type TranslationDict = Record<string, string>;
@@ -37,6 +38,7 @@ export const defaultTranslations: Translations = {
 	it,
 	es,
 	pl,
+	uk,
 	"zh-cn": zhCn,
 };
 

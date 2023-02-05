@@ -1,1 +1,1 @@
-export { default } from "@iobroker/adapter-react/Components/IconSelector";
+export { default } from "@iobroker/adapter-react-v5/Components/IconSelector";

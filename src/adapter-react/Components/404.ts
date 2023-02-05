@@ -1,1 +1,1 @@
-export { default } from "@iobroker/adapter-react/Components/404";
+export { default } from "@iobroker/adapter-react-v5/Components/404";

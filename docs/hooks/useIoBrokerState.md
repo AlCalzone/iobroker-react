@@ -92,7 +92,7 @@ const MyComponent: React.FC<MyAppProps> = (props) => {
 import { useIoBrokerState } from "iobroker-react/hooks";
 
 const MyComponent: React.FC<MyAppProps> = (props) => {
-	const [, myStateAck, setMyState] = useIoBrokerState({
+	const [myState, myStateAck, setMyState] = useIoBrokerState({
 		id: "my-adapter.0.my-state",
 	});
 

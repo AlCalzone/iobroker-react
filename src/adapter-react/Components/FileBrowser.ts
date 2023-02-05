@@ -1,1 +1,1 @@
-export { default } from "@iobroker/adapter-react/Components/FileBrowser";
+export { default } from "@iobroker/adapter-react-v5/Components/FileBrowser";

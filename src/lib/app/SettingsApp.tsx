@@ -1,4 +1,5 @@
-import { createStyles, makeStyles, Theme } from "@material-ui/core";
+import type { Theme } from "@mui/material/styles";
+import { createStyles, makeStyles } from "@mui/styles";
 import React from "react";
 import SaveCloseButtons from "../components/SaveCloseButtons";
 import { useGlobals } from "../hooks/useGlobals";
@@ -52,6 +53,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		main: {
 			flex: "1 1 auto",
 			padding: theme.spacing(2, 4),
+			overflow: "auto", // pin the footer to the bottom
 		},
 		buttons: {
 			flex: "0 0 auto",

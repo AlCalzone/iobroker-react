@@ -1,6 +1,6 @@
 # `SaveCloseButtons`
 
-This component displays the Save and Close buttons of the `SettingsApp`. It is a simplified and cleaned up version of the component from `@iobroker/adapter-react`.
+This component displays the Save and Close buttons of the `SettingsApp`. It is a simplified and cleaned up version of the component from `@iobroker/adapter-react-v5`.
 You shouldn't need to use it directly.
 
 ```ts
