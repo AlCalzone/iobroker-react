@@ -4,11 +4,13 @@ import { useDialogs } from "../hooks/useDialogs";
 import { useGlobals } from "../hooks/useGlobals";
 import { useIoBrokerObject } from "../hooks/useIoBrokerObject";
 
-interface LogoProps {
+export interface SettingsHeaderProps {
 	classes?: { buttons?: string; logo?: string };
 }
 
-export const Logo: React.FC<LogoProps> = (props): JSX.Element => {
+export const SettingsHeader: React.FC<SettingsHeaderProps> = (
+	props,
+): JSX.Element => {
 	const { instance, namespace } = useGlobals();
 	const { showNotification } = useDialogs();
 	const [myObject, setObject] = useIoBrokerObject(
@@ -31,14 +33,18 @@ export const Logo: React.FC<LogoProps> = (props): JSX.Element => {
 		[showNotification],
 	);
 
-	const handleLoadConfig = (native: ioBroker.AdapterConfig) => {
-		if (myObject)
+	// Gets called after the user has imported a config backup
+	const handleImportConfig = React.useCallback(
+		(native: ioBroker.AdapterConfig) => {
+			if (!myObject) return;
 			setObject({
 				...myObject,
 				native,
 			});
-		successNotification("Configuration loaded");
-	};
+			successNotification("Configuration imported");
+		},
+		[myObject, setObject, successNotification],
+	);
 
 	return (
 		<LogoRA
@@ -46,7 +52,7 @@ export const Logo: React.FC<LogoProps> = (props): JSX.Element => {
 			common={myObject?.common ?? {}}
 			native={myObject?.native ?? {}}
 			onError={errorNotification}
-			onLoad={handleLoadConfig}
+			onLoad={handleImportConfig}
 			classes={{
 				buttons: props.classes?.buttons ?? "",
 				logo: props.classes?.logo ?? "",
