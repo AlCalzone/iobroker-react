@@ -141,7 +141,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Loader: React.FC<LoaderProps> = (props) => {
+export const Loader: React.FC<LoaderProps> = (props) => {
 	const { size = 234 } = props;
 	const classes = useStyles();
 
@@ -170,4 +170,3 @@ const Loader: React.FC<LoaderProps> = (props) => {
 		</div>
 	);
 };
-export default Loader;

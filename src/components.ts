@@ -3,7 +3,7 @@ export {
 	DropdownOption,
 	DropdownProps,
 } from "./lib/components/Dropdown";
-export { default as Loader, LoaderProps } from "./lib/components/Loader";
+export { Loader, LoaderProps } from "./lib/components/Loader";
 export {
 	ModalDialog,
 	ModalDialogProps,
@@ -14,8 +14,9 @@ export {
 	SettingsHeaderProps,
 } from "./lib/components/SettingsHeader";
 export {
+	TreeColumnEditComponentProps as EditComponentProps,
 	TreeColumnProps,
-	TreeDataProps,
 	TreeTable,
 	TreeTableProps,
+	TreeTableRow,
 } from "./lib/components/TreeTable";
