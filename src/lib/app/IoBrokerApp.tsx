@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
 import { extend } from "alcalzone-shared/objects";
 import React from "react";
-import Loader from "../components/Loader";
+import { Loader } from "../components/Loader";
 import type { ModalState, ShowModal } from "../components/ModalDialog";
 import { ModalDialog } from "../components/ModalDialog";
 import type {
