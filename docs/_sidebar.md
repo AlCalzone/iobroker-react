@@ -10,12 +10,10 @@
     -   [IoBrokerApp](components/IoBrokerApp.md)
     -   [Dropdown](components/Dropdown.md)
     -   [Loader](components/Loader.md)
-    -   [Logo](components/Logo.md)
+    -   [SettingsHeader](components/SettingsHeader.md)
     -   [SaveCloseButtons](components/SaveCloseButtons.md)
     -   [TreeTable](components/TreeTable.md)
-    -   [PasswordInput](components/PasswordInput.md)
-    -   [NumberInput](components/NumberInput.md)
-    -   [IpAddressInput](components/IpAddressInput.md)
+
 
 -   Hooks
 
