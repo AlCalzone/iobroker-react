@@ -202,7 +202,7 @@ const ExampleComponent: React.FC = () => {
 				columns={columns}
 				data={treeData}
 				onAdd={handleAdd}
-				newData={(data: TreeTableRow[]) => setTreeData(data)}
+				onChange={(data: TreeTableRow[]) => setTreeData(data)}
 				indentation={20}
 				glowOnChange={true}
 			/>

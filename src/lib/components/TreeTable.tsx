@@ -52,7 +52,7 @@ export interface TreeTableProps {
 	/** The name under which the table data gets saved in localStorage */
 	name?: string;
 
-	/** Definitions for all colunms */
+	/** Definitions for all columns */
 	columns: TreeColumnProps[];
 	/** The data to display */
 	data: TreeTableRow[];
@@ -114,9 +114,9 @@ export const TreeTable: React.FC<TreeTableProps> = (props): JSX.Element => {
 	// A row was added or edited, react accordingly
 	const handleUpdate = React.useCallback(
 		(
-			args:
+			...args:
 				| [rowAdded: true]
-				| [newItem: TreeTableRow, oldItem: TreeTableRow],
+				| [newItem: TreeTableRow, oldItem: TreeTableRow]
 		) => {
 			if (args.length === 1) {
 				// A new row was added, let the parent component handle it
@@ -129,7 +129,7 @@ export const TreeTable: React.FC<TreeTableProps> = (props): JSX.Element => {
 					// And notify the parent component. This should re-render this one
 					const newData = [...data];
 					newData[index] = newItem;
-					onChange?.(data);
+					onChange?.(newData);
 				}
 			}
 		},
@@ -148,7 +148,7 @@ export const TreeTable: React.FC<TreeTableProps> = (props): JSX.Element => {
 	);
 
 	const columns = React.useMemo(() => {
-		treeColumnPropsToRA(props.columns);
+		return treeColumnPropsToRA(props.columns);
 	}, [props.columns]);
 
 	return (
